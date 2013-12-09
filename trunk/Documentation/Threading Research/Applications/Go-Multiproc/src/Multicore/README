@@ -1,0 +1,33 @@
+/
+TITLE: 	SMP GO SORTING APPLICATION
+AUTOHR: 	THOMAS TRASK
+STARTDATE: 12-5-2012
+
+PURPOSE: 	TO GENERATE A LIST OF RANDOM NUMBERS AND
+			SORT THEM USING MULTITHREADING.
+
+PROCESS:	THIS PROGRAM CONSISTS OF 4 PARTS: SETUP, SORT, COMBINATION, AND
+			VERIFICATION & OUTPUT.
+			SETUP:	THE APPLICATION GENERETATES A SET OF RANDOM NUMBERS TO SORT.
+			SORT:	IT THEN SPLITS THE LIST INTO (N) PARTS AND SENDS EACH TO
+					ITS OWN PROCESSING THREAD FOR PROCESSING.  IF ALL GOES WELL, 
+					EACH THREAD WILL RETURN A SORTED VERSION OF SAID DATA.
+			COMBINATIONON: ONCE ALL OF THE SETS OF DATA ARE	RETURNED, THEY ARE
+					COMBINED INTO ONE DATA SET.
+			VERIFICATION & OUTPUT: THE SORTED DATA SET IS VERIFIED AS WORKING.
+					ONCE VERIFIED, ALL IMPORTANT PARAMETERS ARE WRITTEN OUT TO
+					AN OUTPUT FILE in the form:
+							<number of threads used>,<data set size>, <sortTime>,<combine time>
+
+EXECUTION:	There are two ways to run the applicaiton:
+				Using the Go Runtime
+					go run mc.go -n <int> -t <int> -o <somefile.ext>
+				Compile and Run
+					go build mc.go
+					./mc -n <int> -t <int> -o <somefile.ext>
+
+INPUT PARAMETERS:
+			-n:		Number of Ints to generate and sort
+			-t:		Number of threads to use.  Defaults to the total # of CPUS on the system.
+			-o:		The name of the output file to write the results to.				
+ /

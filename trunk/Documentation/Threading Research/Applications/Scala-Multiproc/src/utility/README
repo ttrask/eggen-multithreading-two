@@ -1,0 +1,12 @@
+/
+TITLE: 	Scala Thread Actor class.
+AUTOHR: 	THOMAS TRASK
+STARTDATE: 12-5-2012
+
+PURPOSE: 	This where all of the Actor communication magic happens.
+ 			The act() method starts a "listener" that will accept any of
+    		the Scala Message classes.  The Client and server both instantiate
+      		an actor and use them to communicate with each other.      		
+
+ /
+

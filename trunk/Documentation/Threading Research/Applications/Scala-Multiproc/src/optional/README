@@ -1,0 +1,9 @@
+/
+TITLE: 	Scala open source utility to automagically parser parameters.
+AUTOHR: 	Not me. 
+AUTHOR URL:https://code.google.com/p/parse-cmd/wiki/AScalaParserClass
+
+PURPOSE: 	To help fascilitate parsing unix-style input paramters 
+ 			in Scala.
+
+ /

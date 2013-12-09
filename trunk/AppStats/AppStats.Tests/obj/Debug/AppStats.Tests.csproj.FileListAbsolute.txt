@@ -1,0 +1,8 @@
+C:\Projects\Multiproc\AppStats\AppStats.Tests\obj\Debug\AppStats.Tests.csprojResolveAssemblyReference.cache
+C:\Projects\Multiproc\AppStats\AppStats.Tests\bin\Debug\AppStats.Tests.dll.config
+C:\Projects\Multiproc\AppStats\AppStats.Tests\bin\Debug\AppStats.Tests.dll
+C:\Projects\Multiproc\AppStats\AppStats.Tests\bin\Debug\AppStats.Tests.pdb
+C:\Projects\Multiproc\AppStats\AppStats.Tests\bin\Debug\AppStats.dll
+C:\Projects\Multiproc\AppStats\AppStats.Tests\bin\Debug\AppStats.pdb
+C:\Projects\Multiproc\AppStats\AppStats.Tests\obj\Debug\AppStats.Tests.dll
+C:\Projects\Multiproc\AppStats\AppStats.Tests\obj\Debug\AppStats.Tests.pdb
