@@ -1,0 +1,21 @@
+/
+TITLE: 	GO DATA SORTING SERVER APPLICATION
+AUTOHR: 	THOMAS TRASK
+STARTDATE: 12-5-2012
+
+PURPOSE: 	TO GENERATE A LIST OF RANDOM NUMBERS AND
+			SORT THEM USING MULTITHREADING.
+
+PROCESS:	A GO SERVER THAT RUNS ON THE CLUSTER NODES
+			TO FASCILITATE SORTING A LIST OF NUMBERS
+
+EXECUTION:	There are two ways to run the applicaiton:
+				Using the Go Runtime
+					go run server.go
+				Compile and Run
+					go build server.go
+					./server
+
+INPUT PARAMETERS:
+			-p:		The port to use when initializing the server
+ /

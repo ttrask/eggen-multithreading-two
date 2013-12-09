@@ -1,0 +1,39 @@
+TITLE: 	GO SORT CLIENT
+AUTOHR: 	THOMAS TRASK
+STARTDATE: 12-5-2012
+
+PURPOSE: 	TO GENERATE A LIST OF RANDOM NUMBERS AND
+			HAVE A SET OF SERVERS SORT AND RECOMBINE THE LIST.
+
+PROCESS:	THIS PROGRAM CONSISTS OF 4 PARTS: SETUP, SORT, COMBINATION, AND
+			VERIFICATION & OUTPUT.
+			SETUP:	A SET OF GO SORT SERVERS ARE STARTED ON LOCAL/REMOTE
+					MACHINES.  THE SET OF SERVERS ARE LISTED IN THE SERVER LIST,
+					CURRENTLY 'clients.txt'.  WHEN THE SORT CLIENT IS RUN,
+					IT GENERATES A LIST OF N RANDON NUMBERS.
+			SORT:	IT THEN SPLITS THE LIST INTO PARTS AND SENDS EACH PART
+					TO EACH SERVER	FOR PROCESSING.  IF ALL GOES WELL, EACH
+					SERVER WILL RETURN A SORTED VERSION OF SAID DATA.
+			COMBINATIONON: ONCE ALL OF THE SETS OF DATA ARE	RETURNED, THEY ARE
+					COMBINED INTO ONE DATA SET.
+			VERIFICATION & OUTPUT: THE SORTED DATA SET IS VERIFIED AS WORKING.
+					ONCE VERIFIED, ALL IMPORTANT PARAMETERS ARE WRITTEN OUT TO
+					AN OUTPUT FILE IN THE FORM:
+						<number of servers used>,<data set size>, <sortTime>,<combine time>
+
+EXECUTION:	There are two ways to run the applicaiton:
+				Using the Go Runtime
+					go run client.go
+				Compile and Run
+					go build client.go
+					./client
+
+INPUT PARAMETERS:
+			-clf:	Input Server list.
+			-n:		Number of Ints to generate and sort
+			-p:		Protocol to Use
+			-s:		Number of servers to use for operation. If this is set <=0 || > # of servers found,
+					this is set to the # of servers found.  If it's 0<x<#servers, the first x #servers
+					will be used for processing. This is to streamline testing, as one server list can
+					be used for all testing, instead of having different lists for different #s of servers.
+

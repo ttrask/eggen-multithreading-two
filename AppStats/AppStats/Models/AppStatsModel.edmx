@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AppStatsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AppStatsModelStoreContainer">
+          <EntitySet Name="DropFiles" EntityType="AppStatsModel.Store.DropFiles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DropFileStore" EntityType="AppStatsModel.Store.DropFileStore" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Environments" EntityType="AppStatsModel.Store.Environments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Languages" EntityType="AppStatsModel.Store.Languages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Records" EntityType="AppStatsModel.Store.Records" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TimeTypes" EntityType="AppStatsModel.Store.TimeTypes" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TimeStatistics" EntityType="AppStatsModel.Store.TimeStatistics" store:Type="Tables" Schema="Stats" />
+          <AssociationSet Name="FK_DropFiles_Environments" Association="AppStatsModel.Store.FK_DropFiles_Environments">
+            <End Role="Environments" EntitySet="Environments" />
+            <End Role="DropFiles" EntitySet="DropFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFiles_Languages" Association="AppStatsModel.Store.FK_DropFiles_Languages">
+            <End Role="Languages" EntitySet="Languages" />
+            <End Role="DropFiles" EntitySet="DropFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFiles_RecordId" Association="AppStatsModel.Store.FK_DropFiles_RecordId">
+            <End Role="DropFiles" EntitySet="DropFiles" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFileStores_DropFileId" Association="AppStatsModel.Store.FK_DropFileStores_DropFileId">
+            <End Role="DropFiles" EntitySet="DropFiles" />
+            <End Role="DropFileStore" EntitySet="DropFileStore" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Environments" Association="AppStatsModel.Store.FK_Records_Environments">
+            <End Role="Environments" EntitySet="Environments" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Languages" Association="AppStatsModel.Store.FK_Records_Languages">
+            <End Role="Languages" EntitySet="Languages" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_TimeTypes" Association="AppStatsModel.Store.FK_Records_TimeTypes">
+            <End Role="TimeTypes" EntitySet="TimeTypes" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DropFiles">
+          <Key>
+            <PropertyRef Name="DropFileId" />
+          </Key>
+          <Property Name="DropFileId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Filename" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="CraeteDtTm" Type="datetime2" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+          <Property Name="EnvironmentId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DropFileStore">
+          <Key>
+            <PropertyRef Name="DropFileStoreId" />
+          </Key>
+          <Property Name="DropFileRawData" Type="varbinary(max)" Nullable="false" />
+          <Property Name="DropFileId" Type="int" Nullable="false" />
+          <Property Name="DropFileStoreId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Environments">
+          <Key>
+            <PropertyRef Name="EnvinronmentId" />
+          </Key>
+          <Property Name="EnvinronmentId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Languages">
+          <Key>
+            <PropertyRef Name="LanguageId" />
+          </Key>
+          <Property Name="LanguageId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Records">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDtTm" Type="datetime2" Nullable="false" />
+          <Property Name="CreateUser" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="DropFileId" Type="int" Nullable="false" />
+          <Property Name="Size" Type="int" Nullable="false" />
+          <Property Name="ProcessorCount" Type="int" Nullable="false" />
+          <Property Name="ExecuteDtTm" Type="datetime2" Nullable="false" />
+          <Property Name="TimeValue" Type="decimal" Nullable="false" />
+          <Property Name="TimeTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+          <Property Name="EnvironmentId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TimeTypes">
+          <Key>
+            <PropertyRef Name="TimeTypeId" />
+          </Key>
+          <Property Name="TimeTypeId" Type="tinyint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="TimeStatistics">
+          <Key>
+            <PropertyRef Name="TimeStatisticId" />
+          </Key>
+          <Property Name="DatasetSize" Type="int" Nullable="false" />
+          <Property Name="ProcessorCount" Type="int" Nullable="false" />
+          <Property Name="TimeTypeId" Type="tinyint" Nullable="false" />
+          <Property Name="Mean" Type="decimal" Nullable="false" />
+          <Property Name="Median" Type="decimal" Nullable="false" />
+          <Property Name="Average" Type="decimal" Nullable="false" />
+          <Property Name="Q1Mean" Type="decimal" Nullable="false" />
+          <Property Name="Q3Mean" Type="decimal" Nullable="false" />
+          <Property Name="Mode" Type="decimal" Nullable="false" />
+          <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+          <Property Name="EnvironmentId" Type="tinyint" Nullable="false" />
+          <Property Name="Min" Type="decimal" Nullable="false" />
+          <Property Name="Max" Type="decimal" Nullable="false" />
+          <Property Name="MeanAverage" Type="decimal" Nullable="false" />
+          <Property Name="RecordCount" Type="int" Nullable="false" />
+          <Property Name="TimeStatisticId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="BatchTime" Type="datetime2" />
+        </EntityType>
+        <Association Name="FK_DropFiles_Environments">
+          <End Role="Environments" Type="AppStatsModel.Store.Environments" Multiplicity="1" />
+          <End Role="DropFiles" Type="AppStatsModel.Store.DropFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environments">
+              <PropertyRef Name="EnvinronmentId" />
+            </Principal>
+            <Dependent Role="DropFiles">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFiles_Languages">
+          <End Role="Languages" Type="AppStatsModel.Store.Languages" Multiplicity="1" />
+          <End Role="DropFiles" Type="AppStatsModel.Store.DropFiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Languages">
+              <PropertyRef Name="LanguageId" />
+            </Principal>
+            <Dependent Role="DropFiles">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFiles_RecordId">
+          <End Role="DropFiles" Type="AppStatsModel.Store.DropFiles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DropFiles">
+              <PropertyRef Name="DropFileId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="DropFileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFileStores_DropFileId">
+          <End Role="DropFiles" Type="AppStatsModel.Store.DropFiles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DropFileStore" Type="AppStatsModel.Store.DropFileStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DropFiles">
+              <PropertyRef Name="DropFileId" />
+            </Principal>
+            <Dependent Role="DropFileStore">
+              <PropertyRef Name="DropFileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Environments">
+          <End Role="Environments" Type="AppStatsModel.Store.Environments" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environments">
+              <PropertyRef Name="EnvinronmentId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Languages">
+          <End Role="Languages" Type="AppStatsModel.Store.Languages" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Languages">
+              <PropertyRef Name="LanguageId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_TimeTypes">
+          <End Role="TimeTypes" Type="AppStatsModel.Store.TimeTypes" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeTypes">
+              <PropertyRef Name="TimeTypeId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="TimeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pc" Type="int" Mode="In" />
+          <Parameter Name="n" Type="int" Mode="In" />
+          <Parameter Name="lang" Type="int" Mode="In" />
+          <Parameter Name="environment" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateStatistics" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="UpdateStatistics1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" StoreFunctionName="UpdateStatistics" Schema="Stats" />
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AppStatsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AppStatsEntities1" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="DropFiles" EntityType="AppStatsModel.DropFile" />
+          <EntitySet Name="DropFileStores" EntityType="AppStatsModel.DropFileStore" />
+          <EntitySet Name="Environments" EntityType="AppStatsModel.Environment" />
+          <EntitySet Name="Languages" EntityType="AppStatsModel.Language" />
+          <EntitySet Name="Records" EntityType="AppStatsModel.Record" />
+          <EntitySet Name="TimeTypes" EntityType="AppStatsModel.TimeType" />
+          <EntitySet Name="TimeStatistics" EntityType="AppStatsModel.TimeStatistic" />
+          <AssociationSet Name="FK_DropFiles_Environments" Association="AppStatsModel.FK_DropFiles_Environments">
+            <End Role="Environments" EntitySet="Environments" />
+            <End Role="DropFiles" EntitySet="DropFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFiles_Languages" Association="AppStatsModel.FK_DropFiles_Languages">
+            <End Role="Languages" EntitySet="Languages" />
+            <End Role="DropFiles" EntitySet="DropFiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFiles_RecordId" Association="AppStatsModel.FK_DropFiles_RecordId">
+            <End Role="DropFiles" EntitySet="DropFiles" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DropFileStores_DropFileId" Association="AppStatsModel.FK_DropFileStores_DropFileId">
+            <End Role="DropFiles" EntitySet="DropFiles" />
+            <End Role="DropFileStore" EntitySet="DropFileStores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Environments" Association="AppStatsModel.FK_Records_Environments">
+            <End Role="Environments" EntitySet="Environments" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_Languages" Association="AppStatsModel.FK_Records_Languages">
+            <End Role="Languages" EntitySet="Languages" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Records_TimeTypes" Association="AppStatsModel.FK_Records_TimeTypes">
+            <End Role="TimeTypes" EntitySet="TimeTypes" />
+            <End Role="Records" EntitySet="Records" />
+          </AssociationSet>
+          <FunctionImport Name="GetRecords">
+            <Parameter Name="pc" Mode="In" Type="Int32" />
+            <Parameter Name="n" Mode="In" Type="Int32" />
+            <Parameter Name="lang" Mode="In" Type="Int32" />
+            <Parameter Name="environment" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateStatistics" />
+          <FunctionImport Name="UpdateStatistics1" />
+        </EntityContainer>
+        <EntityType Name="DropFile">
+          <Key>
+            <PropertyRef Name="DropFileId" />
+          </Key>
+          <Property Name="DropFileId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Filename" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="CraeteDtTm" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="LanguageId" Type="Byte" Nullable="false" />
+          <Property Name="EnvironmentId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="Environment" Relationship="AppStatsModel.FK_DropFiles_Environments" FromRole="DropFiles" ToRole="Environments" />
+          <NavigationProperty Name="Language" Relationship="AppStatsModel.FK_DropFiles_Languages" FromRole="DropFiles" ToRole="Languages" />
+          <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_DropFiles_RecordId" FromRole="DropFiles" ToRole="Records" />
+          <NavigationProperty Name="DropFileStores" Relationship="AppStatsModel.FK_DropFileStores_DropFileId" FromRole="DropFiles" ToRole="DropFileStore" />
+        </EntityType>
+        <EntityType Name="DropFileStore">
+          <Key>
+            <PropertyRef Name="DropFileStoreId" />
+          </Key>
+          <Property Name="DropFileRawData" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="DropFileId" Type="Int32" Nullable="false" />
+          <Property Name="DropFileStoreId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="DropFile" Relationship="AppStatsModel.FK_DropFileStores_DropFileId" FromRole="DropFileStore" ToRole="DropFiles" />
+        </EntityType>
+        <EntityType Name="Environment">
+          <Key>
+            <PropertyRef Name="EnvinronmentId" />
+          </Key>
+          <Property Name="EnvinronmentId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="DropFiles" Relationship="AppStatsModel.FK_DropFiles_Environments" FromRole="Environments" ToRole="DropFiles" />
+          <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_Environments" FromRole="Environments" ToRole="Records" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageId" />
+          </Key>
+          <Property Name="LanguageId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="DropFiles" Relationship="AppStatsModel.FK_DropFiles_Languages" FromRole="Languages" ToRole="DropFiles" />
+          <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_Languages" FromRole="Languages" ToRole="Records" />
+        </EntityType>
+        <EntityType Name="Record">
+          <Key>
+            <PropertyRef Name="RecordId" />
+          </Key>
+          <Property Name="RecordId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CreateDtTm" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CreateUser" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DropFileId" Type="Int32" Nullable="false" />
+          <Property Name="Size" Type="Int32" Nullable="false" />
+          <Property Name="ProcessorCount" Type="Int32" Nullable="false" />
+          <Property Name="ExecuteDtTm" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="TimeValue" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="TimeTypeId" Type="Byte" Nullable="false" />
+          <Property Name="LanguageId" Type="Byte" Nullable="false" />
+          <Property Name="EnvironmentId" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="DropFile" Relationship="AppStatsModel.FK_DropFiles_RecordId" FromRole="Records" ToRole="DropFiles" />
+          <NavigationProperty Name="Environment" Relationship="AppStatsModel.FK_Records_Environments" FromRole="Records" ToRole="Environments" />
+          <NavigationProperty Name="Language" Relationship="AppStatsModel.FK_Records_Languages" FromRole="Records" ToRole="Languages" />
+          <NavigationProperty Name="TimeType" Relationship="AppStatsModel.FK_Records_TimeTypes" FromRole="Records" ToRole="TimeTypes" />
+        </EntityType>
+        <EntityType Name="TimeType">
+          <Key>
+            <PropertyRef Name="TimeTypeId" />
+          </Key>
+          <Property Name="TimeTypeId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_TimeTypes" FromRole="TimeTypes" ToRole="Records" />
+        </EntityType>
+        <EntityType Name="TimeStatistic">
+          <Key>
+            <PropertyRef Name="TimeStatisticId" />
+          </Key>
+          <Property Name="DatasetSize" Type="Int32" Nullable="false" />
+          <Property Name="ProcessorCount" Type="Int32" Nullable="false" />
+          <Property Name="TimeTypeId" Type="Byte" Nullable="false" />
+          <Property Name="Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Median" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Average" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Q1Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Q3Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Mode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="LanguageId" Type="Byte" Nullable="false" />
+          <Property Name="EnvironmentId" Type="Byte" Nullable="false" />
+          <Property Name="Min" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Max" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="MeanAverage" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="RecordCount" Type="Int32" Nullable="false" />
+          <Property Name="TimeStatisticId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="BatchTime" Type="DateTime" Precision="7" />
+        </EntityType>
+        <Association Name="FK_DropFiles_Environments">
+          <End Role="Environments" Type="AppStatsModel.Environment" Multiplicity="1" />
+          <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environments">
+              <PropertyRef Name="EnvinronmentId" />
+            </Principal>
+            <Dependent Role="DropFiles">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFiles_Languages">
+          <End Role="Languages" Type="AppStatsModel.Language" Multiplicity="1" />
+          <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Languages">
+              <PropertyRef Name="LanguageId" />
+            </Principal>
+            <Dependent Role="DropFiles">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFiles_RecordId">
+          <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DropFiles">
+              <PropertyRef Name="DropFileId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="DropFileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DropFileStores_DropFileId">
+          <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DropFileStore" Type="AppStatsModel.DropFileStore" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DropFiles">
+              <PropertyRef Name="DropFileId" />
+            </Principal>
+            <Dependent Role="DropFileStore">
+              <PropertyRef Name="DropFileId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Environments">
+          <End Role="Environments" Type="AppStatsModel.Environment" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Environments">
+              <PropertyRef Name="EnvinronmentId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="EnvironmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_Languages">
+          <End Role="Languages" Type="AppStatsModel.Language" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Languages">
+              <PropertyRef Name="LanguageId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Records_TimeTypes">
+          <End Role="TimeTypes" Type="AppStatsModel.TimeType" Multiplicity="1" />
+          <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TimeTypes">
+              <PropertyRef Name="TimeTypeId" />
+            </Principal>
+            <Dependent Role="Records">
+              <PropertyRef Name="TimeTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AppStatsModelStoreContainer" CdmEntityContainer="AppStatsEntities1">
+          <EntitySetMapping Name="DropFiles">
+            <EntityTypeMapping TypeName="AppStatsModel.DropFile">
+              <MappingFragment StoreEntitySet="DropFiles">
+                <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="CraeteDtTm" ColumnName="CraeteDtTm" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DropFileStores">
+            <EntityTypeMapping TypeName="AppStatsModel.DropFileStore">
+              <MappingFragment StoreEntitySet="DropFileStore">
+                <ScalarProperty Name="DropFileRawData" ColumnName="DropFileRawData" />
+                <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+                <ScalarProperty Name="DropFileStoreId" ColumnName="DropFileStoreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Environments">
+            <EntityTypeMapping TypeName="AppStatsModel.Environment">
+              <MappingFragment StoreEntitySet="Environments">
+                <ScalarProperty Name="EnvinronmentId" ColumnName="EnvinronmentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Languages">
+            <EntityTypeMapping TypeName="AppStatsModel.Language">
+              <MappingFragment StoreEntitySet="Languages">
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Records">
+            <EntityTypeMapping TypeName="AppStatsModel.Record">
+              <MappingFragment StoreEntitySet="Records">
+                <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+                <ScalarProperty Name="CreateDtTm" ColumnName="CreateDtTm" />
+                <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+                <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
+                <ScalarProperty Name="ExecuteDtTm" ColumnName="ExecuteDtTm" />
+                <ScalarProperty Name="TimeValue" ColumnName="TimeValue" />
+                <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeTypes">
+            <EntityTypeMapping TypeName="AppStatsModel.TimeType">
+              <MappingFragment StoreEntitySet="TimeTypes">
+                <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimeStatistics">
+            <EntityTypeMapping TypeName="AppStatsModel.TimeStatistic">
+              <MappingFragment StoreEntitySet="TimeStatistics">
+                <ScalarProperty Name="DatasetSize" ColumnName="DatasetSize" />
+                <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
+                <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+                <ScalarProperty Name="Mean" ColumnName="Mean" />
+                <ScalarProperty Name="Median" ColumnName="Median" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Q1Mean" ColumnName="Q1Mean" />
+                <ScalarProperty Name="Q3Mean" ColumnName="Q3Mean" />
+                <ScalarProperty Name="Mode" ColumnName="Mode" />
+                <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+                <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+                <ScalarProperty Name="Min" ColumnName="Min" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="MeanAverage" ColumnName="MeanAverage" />
+                <ScalarProperty Name="RecordCount" ColumnName="RecordCount" />
+                <ScalarProperty Name="TimeStatisticId" ColumnName="TimeStatisticId" />
+                <ScalarProperty Name="BatchTime" ColumnName="BatchTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="GetRecords" FunctionName="AppStatsModel.Store.GetRecords" />
+          <FunctionImportMapping FunctionImportName="UpdateStatistics" FunctionName="AppStatsModel.Store.UpdateStatistics" />
+          <FunctionImportMapping FunctionImportName="UpdateStatistics1" FunctionName="AppStatsModel.Store.UpdateStatistics1" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

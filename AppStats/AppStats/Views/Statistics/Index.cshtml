@@ -1,0 +1,14 @@
+﻿@model AppStats.Models.Chart
+@using AppStats.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+<div style="width:100%"><h2 style="display:inline">Statistics!</h2></div>
+
+<br />
+
+
+<div><b>@Html.ActionLink("Update Statistics", "UpdateStatistics", "Statistics", new { }, new { @class = "button", @float="right"})</b> @Html.ActionLink("Build a Chart", "Chart", "Statistics", new{}, new{@class="button"}) </div>
+
+

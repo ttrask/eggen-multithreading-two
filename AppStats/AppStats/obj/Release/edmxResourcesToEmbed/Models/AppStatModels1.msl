@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AppStatsModelStoreContainer" CdmEntityContainer="AppStatsEntities">
+    <EntitySetMapping Name="DropFiles">
+      <EntityTypeMapping TypeName="AppStatsModel.DropFile">
+        <MappingFragment StoreEntitySet="DropFiles">
+          <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="CraeteDtTm" ColumnName="CraeteDtTm" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DropFileStores">
+      <EntityTypeMapping TypeName="AppStatsModel.DropFileStore">
+        <MappingFragment StoreEntitySet="DropFileStore">
+          <ScalarProperty Name="DropFileRawData" ColumnName="DropFileRawData" />
+          <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+          <ScalarProperty Name="DropFileStoreId" ColumnName="DropFileStoreId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Envrionments">
+      <EntityTypeMapping TypeName="AppStatsModel.Envrionment">
+        <MappingFragment StoreEntitySet="Envrionments">
+          <ScalarProperty Name="EnvinronmentId" ColumnName="EnvinronmentId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Languages">
+      <EntityTypeMapping TypeName="AppStatsModel.Language">
+        <MappingFragment StoreEntitySet="Languages">
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Records">
+      <EntityTypeMapping TypeName="AppStatsModel.Record">
+        <MappingFragment StoreEntitySet="Records">
+          <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+          <ScalarProperty Name="CreateDtTm" ColumnName="CreateDtTm" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+          <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+          <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
+          <ScalarProperty Name="ExecuteDtTm" ColumnName="ExecuteDtTm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Times">
+      <EntityTypeMapping TypeName="AppStatsModel.Time">
+        <MappingFragment StoreEntitySet="Times">
+          <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+          <ScalarProperty Name="TimeValue" ColumnName="Time" />
+          <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+          <ScalarProperty Name="TimeId" ColumnName="TimeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeTypes">
+      <EntityTypeMapping TypeName="AppStatsModel.TimeType">
+        <MappingFragment StoreEntitySet="TimeTypes">
+          <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeStatistics">
+      <EntityTypeMapping TypeName="AppStatsModel.TimeStatistic">
+        <MappingFragment StoreEntitySet="TimeStatistics">
+          <ScalarProperty Name="DatasetSize" ColumnName="DatasetSize" />
+          <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
+          <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+          <ScalarProperty Name="Mean" ColumnName="Mean" />
+          <ScalarProperty Name="Median" ColumnName="Median" />
+          <ScalarProperty Name="Average" ColumnName="Average" />
+          <ScalarProperty Name="Q1Mean" ColumnName="Q1Mean" />
+          <ScalarProperty Name="Q3Mean" ColumnName="Q3Mean" />
+          <ScalarProperty Name="Mode" ColumnName="Mode" />
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="UpdateStatistics" FunctionName="AppStatsModel.Store.UpdateStatistics" />
+    <FunctionImportMapping FunctionImportName="UpdateStatistics1" FunctionName="AppStatsModel.Store.UpdateStatistics1" />
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,29 @@
+/
+TITLE: 	SCALA DATA SORTING SERVER 
+AUTOHR: 	THOMAS TRASK
+STARTDATE: 12-5-2012
+
+PURPOSE: 	SCALA SERVER APPLICATION SET.
+				ScalaActor - SCALA UTITLIY SET TO FASCILITATE THE SORTING
+ 							AND GENERATION OF LISTS OF NUMBERS. 
+				ServerInformation - Scala class used to store server information
+							during processing.
+				ServerShell - SCALA SERVER USED TO GENERATE A LIST OF RANDOM NUMBERS AND
+							SORT THEM USING MULTITHREADING.
+							
+Execution:  The only scala file that can be executed in this application is ServerShell.
+			Once the application set has been compiled, you can start
+ 			the server via the following command:
+    		scala server.ServerShell -name <ClientName> -p <int> -t <int>
+
+INPUT PARAMETERS:
+ 			-name:  THe name that the server should run under.
+    				The Scala client will need this to communicate
+        			with the server correctly. 
+			-p:		The port to use when initializing the server
+			-t:		Thread Count to use for the server.  Defaults 
+     				to the total number of CPUs available.
+
+								
+ 
+

@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AppStatsModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="AppStatsEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="DropFiles" EntityType="AppStatsModel.DropFile" />
+    <EntitySet Name="DropFileStores" EntityType="AppStatsModel.DropFileStore" />
+    <EntitySet Name="Envrionments" EntityType="AppStatsModel.Envrionment" />
+    <EntitySet Name="Languages" EntityType="AppStatsModel.Language" />
+    <EntitySet Name="Records" EntityType="AppStatsModel.Record" />
+    <EntitySet Name="TimeTypes" EntityType="AppStatsModel.TimeType" />
+    <EntitySet Name="TimeStatistics" EntityType="AppStatsModel.TimeStatistic" />
+    <AssociationSet Name="FK_DropFileStore_DropFiles" Association="AppStatsModel.FK_DropFileStore_DropFiles">
+      <End Role="DropFiles" EntitySet="DropFiles" />
+      <End Role="DropFileStore" EntitySet="DropFileStores" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Records_DropFiles" Association="AppStatsModel.FK_Records_DropFiles">
+      <End Role="DropFiles" EntitySet="DropFiles" />
+      <End Role="Records" EntitySet="Records" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Records_Enivornments" Association="AppStatsModel.FK_Records_Enivornments">
+      <End Role="Envrionments" EntitySet="Envrionments" />
+      <End Role="Records" EntitySet="Records" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Records_Languages" Association="AppStatsModel.FK_Records_Languages">
+      <End Role="Languages" EntitySet="Languages" />
+      <End Role="Records" EntitySet="Records" />
+    </AssociationSet>
+    <FunctionImport Name="UpdateStatistics" />
+    <FunctionImport Name="UpdateStatistics1" />
+    <EntitySet Name="Times" EntityType="AppStatsModel.Time" />
+    <AssociationSet Name="FK_Times_Records" Association="AppStatsModel.FK_Times_Records">
+      <End Role="Record" EntitySet="Records" />
+      <End Role="Time" EntitySet="Times" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Times_TimeTypes" Association="AppStatsModel.FK_Times_TimeTypes">
+      <End Role="TimeType" EntitySet="TimeTypes" />
+      <End Role="Time" EntitySet="Times" />
+    </AssociationSet>
+    <FunctionImport Name="UpdateStatistics2" />
+    <FunctionImport Name="UpdateStatistics11" />
+  </EntityContainer>
+  <EntityType Name="DropFile">
+    <Key>
+      <PropertyRef Name="DropFileId" />
+    </Key>
+    <Property Name="DropFileId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Filename" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="CraeteDtTm" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="IsActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="DropFileStores" Relationship="AppStatsModel.FK_DropFileStore_DropFiles" FromRole="DropFiles" ToRole="DropFileStore" />
+    <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_DropFiles" FromRole="DropFiles" ToRole="Records" />
+  </EntityType>
+  <EntityType Name="DropFileStore">
+    <Key>
+      <PropertyRef Name="DropFileStoreId" />
+    </Key>
+    <Property Name="DropFileRawData" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+    <Property Name="DropFileId" Type="Int32" Nullable="false" />
+    <Property Name="DropFileStoreId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="DropFile" Relationship="AppStatsModel.FK_DropFileStore_DropFiles" FromRole="DropFileStore" ToRole="DropFiles" />
+  </EntityType>
+  <EntityType Name="Envrionment">
+    <Key>
+      <PropertyRef Name="EnvinronmentId" />
+    </Key>
+    <Property Name="EnvinronmentId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_Enivornments" FromRole="Envrionments" ToRole="Records" />
+  </EntityType>
+  <EntityType Name="Language">
+    <Key>
+      <PropertyRef Name="LanguageId" />
+    </Key>
+    <Property Name="LanguageId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Records" Relationship="AppStatsModel.FK_Records_Languages" FromRole="Languages" ToRole="Records" />
+  </EntityType>
+  <EntityType Name="Record">
+    <Key>
+      <PropertyRef Name="RecordId" />
+    </Key>
+    <Property Name="RecordId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="CreateDtTm" Type="DateTime" Nullable="false" Precision="7" />
+    <Property Name="CreateUser" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="LanguageId" Type="Byte" Nullable="false" />
+    <Property Name="DroppedFileId" Type="Int32" />
+    <Property Name="EnvironmentId" Type="Byte" Nullable="false" />
+    <Property Name="Size" Type="Int32" Nullable="false" />
+    <Property Name="ProcessorCount" Type="Int32" Nullable="false" />
+    <Property Name="ExecuteDtTm" Type="DateTime" Precision="7" />
+    <NavigationProperty Name="DropFile" Relationship="AppStatsModel.FK_Records_DropFiles" FromRole="Records" ToRole="DropFiles" />
+    <NavigationProperty Name="Envrionment" Relationship="AppStatsModel.FK_Records_Enivornments" FromRole="Records" ToRole="Envrionments" />
+    <NavigationProperty Name="Language" Relationship="AppStatsModel.FK_Records_Languages" FromRole="Records" ToRole="Languages" />
+    <NavigationProperty Name="Times" Relationship="AppStatsModel.FK_Times_Records" FromRole="Record" ToRole="Time" />
+  </EntityType>
+  <EntityType Name="TimeType">
+    <Key>
+      <PropertyRef Name="TimeTypeId" />
+    </Key>
+    <Property Name="TimeTypeId" Type="Byte" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Description" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="Times" Relationship="AppStatsModel.FK_Times_TimeTypes" FromRole="TimeType" ToRole="Time" />
+  </EntityType>
+  <EntityType Name="TimeStatistic">
+    <Key>
+      <PropertyRef Name="DatasetSize" />
+      <PropertyRef Name="ProcessorCount" />
+      <PropertyRef Name="TimeTypeId" />
+      <PropertyRef Name="LanguageId" />
+    </Key>
+    <Property Name="DatasetSize" Type="Int32" Nullable="false" />
+    <Property Name="ProcessorCount" Type="Int32" Nullable="false" />
+    <Property Name="TimeTypeId" Type="Byte" Nullable="false" />
+    <Property Name="Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Median" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Average" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Q1Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Q3Mean" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Mode" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="LanguageId" Type="Byte" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_DropFileStore_DropFiles">
+    <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="1" />
+    <End Role="DropFileStore" Type="AppStatsModel.DropFileStore" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DropFiles">
+        <PropertyRef Name="DropFileId" />
+      </Principal>
+      <Dependent Role="DropFileStore">
+        <PropertyRef Name="DropFileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Records_DropFiles">
+    <End Role="DropFiles" Type="AppStatsModel.DropFile" Multiplicity="0..1" />
+    <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DropFiles">
+        <PropertyRef Name="DropFileId" />
+      </Principal>
+      <Dependent Role="Records">
+        <PropertyRef Name="DroppedFileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Records_Enivornments">
+    <End Role="Envrionments" Type="AppStatsModel.Envrionment" Multiplicity="1" />
+    <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Envrionments">
+        <PropertyRef Name="EnvinronmentId" />
+      </Principal>
+      <Dependent Role="Records">
+        <PropertyRef Name="EnvironmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Records_Languages">
+    <End Role="Languages" Type="AppStatsModel.Language" Multiplicity="1" />
+    <End Role="Records" Type="AppStatsModel.Record" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Languages">
+        <PropertyRef Name="LanguageId" />
+      </Principal>
+      <Dependent Role="Records">
+        <PropertyRef Name="LanguageId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Time">
+    <Key>
+      <PropertyRef Name="TimeId" />
+    </Key>
+    <Property Type="Int32" Name="TimeId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RecordId" Nullable="false" />
+    <Property Type="Decimal" Name="Time1" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="Byte" Name="TimeTypeId" Nullable="false" />
+    <NavigationProperty Name="Record" Relationship="AppStatsModel.FK_Times_Records" FromRole="Time" ToRole="Record" />
+    <NavigationProperty Name="TimeType" Relationship="AppStatsModel.FK_Times_TimeTypes" FromRole="Time" ToRole="TimeType" />
+  </EntityType>
+  <Association Name="FK_Times_Records">
+    <End Type="AppStatsModel.Record" Role="Record" Multiplicity="1" />
+    <End Type="AppStatsModel.Time" Role="Time" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Record">
+        <PropertyRef Name="RecordId" />
+      </Principal>
+      <Dependent Role="Time">
+        <PropertyRef Name="RecordId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Times_TimeTypes">
+    <End Type="AppStatsModel.TimeType" Role="TimeType" Multiplicity="1" />
+    <End Type="AppStatsModel.Time" Role="Time" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TimeType">
+        <PropertyRef Name="TimeTypeId" />
+      </Principal>
+      <Dependent Role="Time">
+        <PropertyRef Name="TimeTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

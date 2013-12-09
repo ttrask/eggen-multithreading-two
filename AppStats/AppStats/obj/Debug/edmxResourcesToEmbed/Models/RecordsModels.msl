@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AppStatsModelStoreContainer" CdmEntityContainer="AppStatsEntities1">
+    <EntitySetMapping Name="DropFiles">
+      <EntityTypeMapping TypeName="AppStatsModel.DropFile">
+        <MappingFragment StoreEntitySet="DropFiles">
+          <ScalarProperty Name="DropFileId" ColumnName="DropFileId" />
+          <ScalarProperty Name="RawData" ColumnName="RawData" />
+          <ScalarProperty Name="Filename" ColumnName="Filename" />
+          <ScalarProperty Name="CraeteDtTm" ColumnName="CraeteDtTm" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Envrionments">
+      <EntityTypeMapping TypeName="AppStatsModel.Envrionment">
+        <MappingFragment StoreEntitySet="Envrionments">
+          <ScalarProperty Name="EnvinronmentId" ColumnName="EnvinronmentId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Languages">
+      <EntityTypeMapping TypeName="AppStatsModel.Language">
+        <MappingFragment StoreEntitySet="Languages">
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Records">
+      <EntityTypeMapping TypeName="AppStatsModel.Record">
+        <MappingFragment StoreEntitySet="Records">
+          <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+          <ScalarProperty Name="CreateDtTm" ColumnName="CreateDtTm" />
+          <ScalarProperty Name="CreateUser" ColumnName="CreateUser" />
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+          <ScalarProperty Name="DroppedFileId" ColumnName="DroppedFileId" />
+          <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
+          <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Times">
+      <EntityTypeMapping TypeName="AppStatsModel.Time">
+        <MappingFragment StoreEntitySet="Times">
+          <ScalarProperty Name="RecordId" ColumnName="RecordId" />
+          <ScalarProperty Name="Time1" ColumnName="Time" />
+          <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TimeTypes">
+      <EntityTypeMapping TypeName="AppStatsModel.TimeType">
+        <MappingFragment StoreEntitySet="TimeTypes">
+          <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Records1">
+      <EntityTypeMapping TypeName="AppStatsModel.Records1">
+        <MappingFragment StoreEntitySet="Records1">
+          <ScalarProperty Name="ENVIRONMENT" ColumnName="ENVIRONMENT" />
+          <ScalarProperty Name="LANGUAGE" ColumnName="LANGUAGE" />
+          <ScalarProperty Name="SORTTIME" ColumnName="SORTTIME" />
+          <ScalarProperty Name="COMBINETIME" ColumnName="COMBINETIME" />
+          <ScalarProperty Name="TOTALTIME" ColumnName="TOTALTIME" />
+          <ScalarProperty Name="N" ColumnName="N" />
+          <ScalarProperty Name="THREADS" ColumnName="THREADS" />
+          <ScalarProperty Name="CreateDtTm" ColumnName="CreateDtTm" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
