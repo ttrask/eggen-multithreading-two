@@ -11,6 +11,7 @@ namespace AppStats.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Environment
     {
@@ -19,10 +20,12 @@ namespace AppStats.Models
             this.DropFiles = new HashSet<DropFile>();
             this.Records = new HashSet<Record>();
         }
-    
-        public byte EnvinronmentId { get; set; }
+
+        [Key]
+        public Int64 EnvinronmentId { get; set; }
         public string Name { get; set; }
     
+        
         public virtual ICollection<DropFile> DropFiles { get; set; }
         public virtual ICollection<Record> Records { get; set; }
     }

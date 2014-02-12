@@ -19,8 +19,8 @@ namespace AppStats.Models
             this.DropFiles = new HashSet<DropFile>();
             this.Records = new HashSet<Record>();
         }
-    
-        public byte LanguageId { get; set; }
+    [System.ComponentModel.DataAnnotations.KeyAttribute]
+        public Int64 LanguageId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     

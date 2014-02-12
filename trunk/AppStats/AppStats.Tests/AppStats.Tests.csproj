@@ -61,6 +61,7 @@
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
     <Compile Include="Shared\UnitTest1.cs" />
+    <Compile Include="Shared\UnitTest2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

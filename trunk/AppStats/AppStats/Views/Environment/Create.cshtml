@@ -1,4 +1,4 @@
-﻿@model AppStats.Models.Envrionment
+﻿@model AppStats.Models.Environment
 
 @{
     ViewBag.Title = "Create";
@@ -11,15 +11,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Envrionment</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.EnvinronmentId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.EnvinronmentId)
-            @Html.ValidationMessageFor(model => model.EnvinronmentId)
-        </div>
+        <legend>Environment</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)

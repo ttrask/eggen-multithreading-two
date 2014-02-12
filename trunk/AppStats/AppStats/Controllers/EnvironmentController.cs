@@ -6,12 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AppStats.Models;
+using AppStats.DataAccess;
 
 namespace AppStats.Controllers
 {
     public class EnvironmentController : Controller
     {
-        private AppStatsEntities1 db = new AppStatsEntities1();
+        private AppStatsContext db = new AppStatsContext();
 
         //
         // GET: /Default1/
@@ -81,7 +82,7 @@ namespace AppStats.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(envrionment).State = EntityState.Modified;
+                db.Entry(envrionment).State = System.Data.EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

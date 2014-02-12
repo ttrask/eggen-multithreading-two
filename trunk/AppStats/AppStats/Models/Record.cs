@@ -11,20 +11,28 @@ namespace AppStats.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     
     public partial class Record
     {
-        public int RecordId { get; set; }
-        public System.DateTime CreateDtTm { get; set; }
+        [System.ComponentModel.DataAnnotations.KeyAttribute]
+        public Int64 RecordId { get; set; }
+        public System.DateTime CreateDtTm { get;  private set;}
         public string CreateUser { get; set; }
-        public int DropFileId { get; set; }
+
+        [ForeignKey("DropFile")]
+        public Int64 DropFileId { get; set; }
         public int Size { get; set; }
         public int ProcessorCount { get; set; }
         public System.DateTime ExecuteDtTm { get; set; }
         public decimal TimeValue { get; set; }
-        public byte TimeTypeId { get; set; }
-        public byte LanguageId { get; set; }
-        public byte EnvironmentId { get; set; }
+
+        [ForeignKey("TimeType")]
+        public Int64 TimeTypeId { get; set; }
+        [ForeignKey("Language")]
+        public Int64 LanguageId { get; set; }
+        [ForeignKey("Environment")]
+        public Int64 EnvironmentId { get; set; }
     
         public virtual DropFile DropFile { get; set; }
         public virtual Environment Environment { get; set; }
