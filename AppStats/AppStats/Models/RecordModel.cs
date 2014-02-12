@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AppStats.DataAccess;
 
 
 namespace AppStats.Models
@@ -11,7 +12,13 @@ namespace AppStats.Models
 
     public partial class Record: AppStatsEntity
     {
-        private static AppStatsEntities1 db = new AppStatsEntities1();
+        private static AppStatsContext db = new AppStatsContext();
+
+        public Record()
+        {
+            CreateDtTm = DateTime.Now;
+
+        }
 
         public static IEnumerable<SelectListItem> Environments
         {

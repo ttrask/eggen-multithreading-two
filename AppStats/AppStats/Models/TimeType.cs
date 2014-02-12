@@ -14,12 +14,14 @@ namespace AppStats.Models
     
     public partial class TimeType
     {
+
         public TimeType()
         {
             this.Records = new HashSet<Record>();
         }
-    
-        public byte TimeTypeId { get; set; }
+
+        [System.ComponentModel.DataAnnotations.KeyAttribute]
+        public Int64 TimeTypeId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     

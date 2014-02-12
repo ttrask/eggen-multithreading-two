@@ -16,20 +16,20 @@ namespace AppStats.Models
     {
         public int DatasetSize { get; set; }
         public int ProcessorCount { get; set; }
-        public byte TimeTypeId { get; set; }
+        public Int64 TimeTypeId { get; set; }
         public decimal Mean { get; set; }
         public decimal Median { get; set; }
         public decimal Average { get; set; }
         public decimal Q1Mean { get; set; }
         public decimal Q3Mean { get; set; }
         public decimal Mode { get; set; }
-        public byte LanguageId { get; set; }
-        public byte EnvironmentId { get; set; }
+        public Int64 LanguageId { get; set; }
+        public Int64 EnvironmentId { get; set; }
         public decimal Min { get; set; }
         public decimal Max { get; set; }
         public decimal MeanAverage { get; set; }
         public int RecordCount { get; set; }
-        public int TimeStatisticId { get; set; }
-        public Nullable<System.DateTime> BatchTime { get; set; }
+        public Int64 TimeStatisticId { get; set; }
+        public System.DateTime BatchTime { get; set; }
     }
 }

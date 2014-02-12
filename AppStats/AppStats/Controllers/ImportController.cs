@@ -12,6 +12,7 @@ using AppStats.Models.Enums;
 using System.IO;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.SqlClient;
 using System.Data.Sql;
 
@@ -19,7 +20,7 @@ namespace AppStats.Controllers
 {
     public class ImportController : Controller
     {
-        private static AppStatsEntities1 db = new AppStatsEntities1();
+        private static AppStatsContext db = new AppStatsContext();
         private static List<TimeType> _timeTypesCache;
         //
         // GET: /Import/
@@ -89,7 +90,7 @@ namespace AppStats.Controllers
 
                                     string[] vals = sr.ReadLine().Split(',');
 
-                                    r = new Record() { DropFileId = df.DropFileId, CreateDtTm = DateTime.Now, CreateUser = "", ExecuteDtTm = DateTime.Now, LanguageId = df.LanguageId, EnvironmentId = df.EnvironmentId };
+                                    r = new Record() { DropFileId = df.DropFileId, CreateUser = "", ExecuteDtTm = DateTime.Now, LanguageId = df.LanguageId, EnvironmentId = df.EnvironmentId };
 
                                     foreach (Tuple<string, int, ColumnTypeEnum> col in cs)
                                     {
@@ -133,14 +134,17 @@ namespace AppStats.Controllers
                                             };
                                         }
 
-                                        
+
                                     };
 
 
                                 }
 
+                                //these columns we don't want copied into the database on account of them being inherited by the ORM and not being represented in the db.
+                                List<string> bannedColumns = new List<string> { "TimeType", "DropFile", "Language", "Environment", "RecordId" };
 
-                                SqlBulkInsertRecords(records);
+                                //add conditional for if using Sqlite.
+                                new SqlBulkCopyHelper().SqlBulkInsertRecords("Records", records, bannedColumns, true);
                             }
 
 
@@ -168,127 +172,7 @@ namespace AppStats.Controllers
             return View(df);
         }
 
-        private bool SaveEntity<T>(T entity) where T : class
-        {
-            return SaveRecords(new List<T>() { entity });
-        }
-
-        private bool SaveRecords<T>(List<T> records) where T : class
-        {
-
-            AppStatsEntities1 context = null;
-            try
-            {
-                context = new AppStatsEntities1();
-                context.Configuration.AutoDetectChangesEnabled = false;
-                context.Configuration.ValidateOnSaveEnabled = false;
-
-                int count = 0;
-                foreach (var entityToInsert in records)
-                {
-                    ++count;
-                    context = AddToContext<T>(context, entityToInsert, count, 1000, true);
-                }
-
-                context.SaveChanges();
-            }
-            catch (DbEntityValidationException dbEx)
-            {
-                foreach (var validationErrors in dbEx.EntityValidationErrors)
-                {
-                    foreach (var validationError in validationErrors.ValidationErrors)
-                    {
-                        Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                if (context != null)
-                    context.Dispose();
-            }
-
-            return true;
-
-        }
-
-        public bool SqlBulkInsertRecords(List<Record> recs)
-        {
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(db.Database.Connection.ConnectionString))
-                {
-                    cn.Open();
-
-                    List<string> bannedColumns = new List<string> { "TimeType", "DropFile", "Language", "Environment" };
-
-                    DataTable tbl = recs.ToDataTable();
-
-                    bannedColumns.ForEach(delegate(String bc)
-                    {
-                        if (tbl.Columns.Contains(bc))
-                        {
-                            tbl.Columns.Remove(bc);
-                        }
-                    });
-
-
-
-                    using (SqlBulkCopy bulk = new SqlBulkCopy(cn))
-                    {
-
-                        bulk.DestinationTableName = "Records";
-                        bulk.NotifyAfter = 1000;
-                        bulk.SqlRowsCopied += new SqlRowsCopiedEventHandler(s_SqlRowsCopied);
-                        bulk.WriteToServer(tbl);
-                        bulk.Close();
-                    }
-
-                    cn.Close();
-                }
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        static void s_SqlRowsCopied(object sender, SqlRowsCopiedEventArgs e)
-        {
-            Console.WriteLine("-- Copied {0} rows.", e.RowsCopied);
-        }
-
-
-        private AppStatsEntities1 AddToContext<T>(AppStatsEntities1 context, T entity, int count, int commitCount, bool recreateContext) where T : class
-        {
-            context.Set<T>().Add(entity);
-
-            if (count % commitCount == 0)
-            {
-                context.SaveChanges();
-                if (recreateContext)
-                {
-                    context.Dispose();
-
-                    context = new AppStatsEntities1();
-                    context.Configuration.AutoDetectChangesEnabled = false;
-                    context.Configuration.ValidateOnSaveEnabled = false;
-
-                }
-            }
-
-            return context;
-        }
-
-
-
-        private byte GetTimeTypeId(string name)
+        private Int64 GetTimeTypeId(string name)
         {
 
             if (_timeTypesCache == null)
@@ -343,36 +227,95 @@ namespace AppStats.Controllers
             }
             cols = cols.Distinct().ToList();
             return cols;
+
+
         }
 
-    }
+        private bool SaveEntity<T>(T entity) where T : class
+        {
+            return SaveRecords(new List<T>() { entity });
+        }
 
-    public static class ListExtender
-    {
-        public static DataTable ToDataTable<T>(this IList<T> data)
+        private bool SaveRecords<T>(List<T> records) where T : class
         {
 
-
-            PropertyDescriptorCollection props =
-                TypeDescriptor.GetProperties(typeof(T));
-            DataTable table = new DataTable();
-            for (int i = 0; i < props.Count; i++)
+            AppStatsContext context = null;
+            try
             {
-                PropertyDescriptor prop = props[i];
+                context = new AppStatsContext();
+                context.Configuration.AutoDetectChangesEnabled = false;
+                context.Configuration.ValidateOnSaveEnabled = false;
 
-                table.Columns.Add(prop.Name, prop.PropertyType);
-            }
-            object[] values = new object[props.Count];
-            foreach (T item in data)
-            {
-                for (int i = 0; i < values.Length; i++)
+                int count = 0;
+                foreach (var entityToInsert in records)
                 {
-                    values[i] = props[i].GetValue(item);
+                    ++count;
+                    context = AddToContext<T>(context, entityToInsert, count, 1000, true);
                 }
-                table.Rows.Add(values);
+
+                context.SaveChanges();
             }
-            return table;
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (context != null)
+                    context.Dispose();
+            }
+
+            return true;
+
         }
 
+
+
+
+
+
+
+        private AppStatsContext AddToContext<T>(AppStatsContext context, T entity, int count, int commitCount, bool recreateContext) where T : class
+        {
+            context.Set<T>().Add(entity);
+
+            if (count % commitCount == 0)
+            {
+                context.SaveChanges();
+                if (recreateContext)
+                {
+                    context.Dispose();
+
+                    context = new AppStatsContext();
+                    context.Configuration.AutoDetectChangesEnabled = false;
+                    context.Configuration.ValidateOnSaveEnabled = false;
+
+                }
+            }
+
+            return context;
+        }
+
+
+
+
+
+        public class TypeSwitch
+        {
+            Dictionary<Type, Action<object>> matches = new Dictionary<Type, Action<object>>();
+            public TypeSwitch Case<T>(Action<T> action) { matches.Add(typeof(T), (x) => action((T)x)); return this; }
+            public void Switch(object x) { matches[x.GetType()](x); }
+        }
     }
 }

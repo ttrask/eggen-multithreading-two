@@ -13,6 +13,7 @@ using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
 using AppStats.Models;
 using AppStats.Models.Enums;
+using AppStats.DataAccess;
 
 namespace AppStats.Helpers
 {
@@ -20,7 +21,7 @@ namespace AppStats.Helpers
     {
         //
         // GET: /StatisticsHelper/
-        AppStatsEntities1 db = new AppStatsEntities1();
+        AppStatsContext db = new AppStatsContext();
 
 
         public Boolean UpdateStatistics()
@@ -30,15 +31,15 @@ namespace AppStats.Helpers
                 try
                 {
 
-                    db.Database.ExecuteSqlCommand("DELETE FROM Stats.TimeStatistics");
+                    db.Database.ExecuteSqlCommand("DELETE FROM TimeStatistics");
                     //var objCtx = ((System.Data.Entity.Infrastructure.IObjectContextAdapter)db).ObjectContext;
 
                     //objCtx.ExecuteStoreCommand("TRUNCATE TABLE [Statistics.TimeStatistics]");
 
                     //get active set
 
-                    List<byte> langIds = (from r in db.DropFiles select r.LanguageId).Distinct().ToList();
-                    List<byte> envids = (from r in db.DropFiles select r.EnvironmentId).Distinct().ToList();
+                    List<Int64> langIds = (from r in db.DropFiles select r.LanguageId).Distinct().ToList();
+                    List<Int64> envids = (from r in db.DropFiles select r.EnvironmentId).Distinct().ToList();
                     List<int> procCounts = (from r in db.Records select r.ProcessorCount).Distinct().ToList();
                     List<TimeType> timeTypes = (from t in db.TimeTypes select t).Distinct().ToList();
                     List<int> ns = (from r in db.Records select r.Size).Distinct().ToList();
@@ -141,10 +142,10 @@ namespace AppStats.Helpers
                                         }
                                     }
 
-                                    SaveRecords(stats);
+                                    new SqlBulkCopyHelper().SqlBulkInsertRecords("TimeStatistics", stats, null, true);
                                     stats.Clear();
 
-                                    db = new AppStatsEntities1();
+                                    db = new AppStatsContext();
                                    
                                 }
 
@@ -197,10 +198,10 @@ namespace AppStats.Helpers
         private bool SaveRecords<T>(List<T> records) where T : class
         {
 
-            AppStatsEntities1 context = null;
+            AppStatsContext context = null;
             try
             {
-                context = new AppStatsEntities1();
+                context = new AppStatsContext();
                 context.Configuration.AutoDetectChangesEnabled = false;
 
                 int count = 0;
@@ -237,7 +238,7 @@ namespace AppStats.Helpers
 
         }
 
-        private AppStatsEntities1 AddToContext<T>(AppStatsEntities1 context, T entity, int count, int commitCount, bool recreateContext) where T : class
+        private AppStatsContext AddToContext<T>(AppStatsContext context, T entity, int count, int commitCount, bool recreateContext) where T : class
         {
             context.Set<T>().Add(entity);
 
@@ -247,7 +248,7 @@ namespace AppStats.Helpers
                 if (recreateContext)
                 {
                     context.Dispose();
-                    context = new AppStatsEntities1();
+                    context = new AppStatsContext();
                     context.Configuration.AutoDetectChangesEnabled = false;
                 }
             }
@@ -259,7 +260,7 @@ namespace AppStats.Helpers
     }
 
     public static class AppStatsEntitiesExension{
-        public static void ClearCache(this AppStatsEntities1 context)
+        public static void ClearCache(this AppStatsContext context)
         {
             const BindingFlags FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 

@@ -11,12 +11,16 @@ namespace AppStats.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class DropFileStore
     {
         public byte[] DropFileRawData { get; set; }
-        public int DropFileId { get; set; }
-        public int DropFileStoreId { get; set; }
+
+        [ForeignKey("DropFile")]
+        public Int64 DropFileId { get; set; }
+        [System.ComponentModel.DataAnnotations.KeyAttribute]
+        public Int64 DropFileStoreId { get; set; }
     
         public virtual DropFile DropFile { get; set; }
     }

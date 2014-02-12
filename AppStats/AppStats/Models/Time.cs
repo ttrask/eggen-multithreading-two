@@ -17,6 +17,7 @@ namespace AppStats.Models
         public int RecordId { get; set; }
         public decimal TimeValue { get; set; }
         public byte TimeTypeId { get; set; }
+        [System.ComponentModel.DataAnnotations.KeyAttribute]
         public long TimeId { get; set; }
     
         public virtual Record Record { get; set; }

@@ -49,16 +49,10 @@
           <ScalarProperty Name="Size" ColumnName="Size" />
           <ScalarProperty Name="ProcessorCount" ColumnName="ProcessorCount" />
           <ScalarProperty Name="ExecuteDtTm" ColumnName="ExecuteDtTm" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Times">
-      <EntityTypeMapping TypeName="AppStatsModel.Time">
-        <MappingFragment StoreEntitySet="Times">
-          <ScalarProperty Name="RecordId" ColumnName="RecordId" />
           <ScalarProperty Name="TimeValue" ColumnName="TimeValue" />
           <ScalarProperty Name="TimeTypeId" ColumnName="TimeTypeId" />
-          <ScalarProperty Name="TimeId" ColumnName="TimeId" />
+          <ScalarProperty Name="LanguageId" ColumnName="LanguageId" />
+          <ScalarProperty Name="EnvironmentId" ColumnName="EnvironmentId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -94,8 +88,5 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="GetRecords" FunctionName="AppStatsModel.Store.GetRecords" />
-    <FunctionImportMapping FunctionImportName="UpdateStatistics" FunctionName="AppStatsModel.Store.UpdateStatistics" />
-    <FunctionImportMapping FunctionImportName="UpdateStatistics1" FunctionName="AppStatsModel.Store.UpdateStatistics1" />
   </EntityContainerMapping>
 </Mapping>

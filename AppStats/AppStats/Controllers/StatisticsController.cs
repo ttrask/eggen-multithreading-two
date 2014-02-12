@@ -17,7 +17,7 @@ namespace AppStats.Controllers
         // GET: /Statistics/
         int goDivisor = 1000000;
 
-        AppStatsEntities1 db = new AppStatsEntities1();
+        AppStatsContext db = new AppStatsContext();
 
         public ActionResult Index()
         {

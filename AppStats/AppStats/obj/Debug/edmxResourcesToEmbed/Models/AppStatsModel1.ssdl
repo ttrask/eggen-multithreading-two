@@ -6,7 +6,6 @@
     <EntitySet Name="Environments" EntityType="AppStatsModel.Store.Environments" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Languages" EntityType="AppStatsModel.Store.Languages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Records" EntityType="AppStatsModel.Store.Records" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Times" EntityType="AppStatsModel.Store.Times" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TimeTypes" EntityType="AppStatsModel.Store.TimeTypes" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TimeStatistics" EntityType="AppStatsModel.Store.TimeStatistics" store:Type="Tables" Schema="Stats" />
     <AssociationSet Name="FK_DropFiles_Environments" Association="AppStatsModel.Store.FK_DropFiles_Environments">
@@ -25,17 +24,17 @@
       <End Role="DropFiles" EntitySet="DropFiles" />
       <End Role="DropFileStore" EntitySet="DropFileStore" />
     </AssociationSet>
-    <AssociationSet Name="FK_Times_Records" Association="AppStatsModel.Store.FK_Times_Records">
+    <AssociationSet Name="FK_Records_Environments" Association="AppStatsModel.Store.FK_Records_Environments">
+      <End Role="Environments" EntitySet="Environments" />
       <End Role="Records" EntitySet="Records" />
-      <End Role="Times" EntitySet="Times" />
     </AssociationSet>
-    <AssociationSet Name="FK_Times_Times" Association="AppStatsModel.Store.FK_Times_Times">
-      <End Role="Times" EntitySet="Times" />
-      <End Role="Times1" EntitySet="Times" />
+    <AssociationSet Name="FK_Records_Languages" Association="AppStatsModel.Store.FK_Records_Languages">
+      <End Role="Languages" EntitySet="Languages" />
+      <End Role="Records" EntitySet="Records" />
     </AssociationSet>
-    <AssociationSet Name="FK_Times_TimeTypes" Association="AppStatsModel.Store.FK_Times_TimeTypes">
+    <AssociationSet Name="FK_Records_TimeTypes" Association="AppStatsModel.Store.FK_Records_TimeTypes">
       <End Role="TimeTypes" EntitySet="TimeTypes" />
-      <End Role="Times" EntitySet="Times" />
+      <End Role="Records" EntitySet="Records" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="DropFiles">
@@ -78,20 +77,15 @@
     </Key>
     <Property Name="RecordId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="CreateDtTm" Type="datetime2" Nullable="false" />
-    <Property Name="CreateUser" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateUser" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="DropFileId" Type="int" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
     <Property Name="ProcessorCount" Type="int" Nullable="false" />
-    <Property Name="ExecuteDtTm" Type="datetime2" />
-  </EntityType>
-  <EntityType Name="Times">
-    <Key>
-      <PropertyRef Name="TimeId" />
-    </Key>
-    <Property Name="RecordId" Type="int" Nullable="false" />
+    <Property Name="ExecuteDtTm" Type="datetime2" Nullable="false" />
     <Property Name="TimeValue" Type="decimal" Nullable="false" />
     <Property Name="TimeTypeId" Type="tinyint" Nullable="false" />
-    <Property Name="TimeId" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+    <Property Name="EnvironmentId" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeTypes">
     <Key>
@@ -175,48 +169,40 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Times_Records">
-    <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="1" />
-    <End Role="Times" Type="AppStatsModel.Store.Times" Multiplicity="*" />
+  <Association Name="FK_Records_Environments">
+    <End Role="Environments" Type="AppStatsModel.Store.Environments" Multiplicity="1" />
+    <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Records">
-        <PropertyRef Name="RecordId" />
+      <Principal Role="Environments">
+        <PropertyRef Name="EnvinronmentId" />
       </Principal>
-      <Dependent Role="Times">
-        <PropertyRef Name="RecordId" />
+      <Dependent Role="Records">
+        <PropertyRef Name="EnvironmentId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Times_Times">
-    <End Role="Times" Type="AppStatsModel.Store.Times" Multiplicity="1" />
-    <End Role="Times1" Type="AppStatsModel.Store.Times" Multiplicity="0..1" />
+  <Association Name="FK_Records_Languages">
+    <End Role="Languages" Type="AppStatsModel.Store.Languages" Multiplicity="1" />
+    <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="Times">
-        <PropertyRef Name="TimeId" />
+      <Principal Role="Languages">
+        <PropertyRef Name="LanguageId" />
       </Principal>
-      <Dependent Role="Times1">
-        <PropertyRef Name="TimeId" />
+      <Dependent Role="Records">
+        <PropertyRef Name="LanguageId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Times_TimeTypes">
+  <Association Name="FK_Records_TimeTypes">
     <End Role="TimeTypes" Type="AppStatsModel.Store.TimeTypes" Multiplicity="1" />
-    <End Role="Times" Type="AppStatsModel.Store.Times" Multiplicity="*" />
+    <End Role="Records" Type="AppStatsModel.Store.Records" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="TimeTypes">
         <PropertyRef Name="TimeTypeId" />
       </Principal>
-      <Dependent Role="Times">
+      <Dependent Role="Records">
         <PropertyRef Name="TimeTypeId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Function Name="GetRecords" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-    <Parameter Name="pc" Type="int" Mode="In" />
-    <Parameter Name="n" Type="int" Mode="In" />
-    <Parameter Name="lang" Type="int" Mode="In" />
-    <Parameter Name="environment" Type="int" Mode="In" />
-  </Function>
-  <Function Name="UpdateStatistics" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-  <Function Name="UpdateStatistics1" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" StoreFunctionName="UpdateStatistics" Schema="Stats" />
 </Schema>

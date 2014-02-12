@@ -12,4 +12,6 @@ namespace AppStats.Models
     public partial class DropFile : AppStatsEntity { }
     public partial class Environment : AppStatsEntity { }
     public partial class Language : AppStatsEntity { }
+    public partial class Record : AppStatsEntity { }
+    public partial class TimeStatistic : AppStatsEntity { }
 }
