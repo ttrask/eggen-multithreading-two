@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SQLite;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AppStats.Models;
+<<<<<<< .mine
 using AppStats.DataAccess;
+//using EntityFramework.Extensions;
+=======
+using AppStats.DataAccess;
+>>>>>>> .r4
 
 namespace AppStats.Controllers
 {
@@ -14,11 +20,16 @@ namespace AppStats.Controllers
     {
         private AppStatsContext db = new AppStatsContext();
 
+        
+
+        
+
         //
         // GET: /Default1/
 
         public ActionResult Index()
         {
+            
             return View(db.DropFiles.ToList());
         }
 
@@ -113,23 +124,14 @@ namespace AppStats.Controllers
             //{
             //    return HttpNotFound();
             //}
+            db.Database.ExecuteSqlCommand("PRAGMA foreign_keys = true;");
+            db.Database.ExecuteSqlCommand(String.Format("Delete from DropFiles where DropFileId = {0}", id));
 
-            //foreach (var t in db.DropFileStores.Where(t => t.DropFileId == id))
-            //{
-            //    db.DropFileStores.Remove(t);
-            //}
-            
+            //db.DropFileStores(t => t.DropFileId == id);
 
-            //foreach (var r in db.Records.Where(r => r.DropFileId == dropfile.DropFileId))
-            //{
-            //    foreach (var t in db.Times.Where(t => t.RecordId == r.RecordId))
-            //    {
-            //        db.Times.Remove(t);
-            //    }
-            //    db.Records.Remove(r);
-            //}
+            //db.Records.Delete(r => r.DropFileId == id);
 
-            db.DropFiles.Remove(dropfile);
+            //db.DropFiles.Where(d => d.DropFileId == id).ToList().ForEach(d => db.DropFiles.Remove(d));
 
             db.SaveChanges();
 

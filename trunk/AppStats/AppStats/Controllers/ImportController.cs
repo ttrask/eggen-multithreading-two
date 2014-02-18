@@ -69,6 +69,8 @@ namespace AppStats.Controllers
                             df.Filename = uploadedFile.FileName;
                             df.CraeteDtTm = DateTime.Now;
                             df.IsActive = true;
+                            df.Environment = db.Environments.First(e => e.EnvinronmentId == df.EnvironmentId);
+                            df.Language = db.Languages.First(e => e.LanguageId == df.LanguageId);
 
                             db.DropFiles.Add(df);
                             db.SaveChanges();

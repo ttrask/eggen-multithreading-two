@@ -17,9 +17,21 @@ namespace AppStats.DataAccess
     
     public partial class AppStatsContext : DbContext
     {
+<<<<<<< .mine
+        
+=======
         public AppStatsContext()
             : base("name=AppStatsContext")
         {
+            Database.SetInitializer<AppStatsContext>(null);
+>>>>>>> .r4
+
+<<<<<<< .mine
+        public AppStatsContext()
+            : base("name=AppStatsContext")
+        {
+
+
             Database.SetInitializer<AppStatsContext>(null);
 
             if (!Database.Exists())
@@ -27,12 +39,33 @@ namespace AppStats.DataAccess
                 throw new Exception("Database " + Database.Connection.ConnectionString + " does not exist.");
             }
         }
+
+        void ConnectionStateChange(object sender, System.Data.StateChangeEventArgs e)
+        {
+            if (e.CurrentState == System.Data.ConnectionState.Open)
+                this.Database.ExecuteSqlCommand("PRAGMA foreign_keys = true;");
+        }
     
+=======
+            if (!Database.Exists())
+            {
+                throw new Exception("Database " + Database.Connection.ConnectionString + " does not exist.");
+            }
+        }
+    
+>>>>>>> .r4
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention>();
         }
     
+        public DbSet<DropFile> DropFiles { get; set; }
+        public DbSet<DropFileStore> DropFileStores { get; set; }
+        public DbSet<AppStats.Models.Environment> Environments { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<Record> Records { get; set; }
+        public DbSet<TimeType> TimeTypes { get; set; }
+        public DbSet<TimeStatistic> TimeStatistics { get; set; }
         public DbSet<DropFile> DropFiles { get; set; }
         public DbSet<DropFileStore> DropFileStores { get; set; }
         public DbSet<AppStats.Models.Environment> Environments { get; set; }
