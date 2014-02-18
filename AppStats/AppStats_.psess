@@ -50,7 +50,7 @@
       <LaunchMethod>Browser</LaunchMethod>
       <LaunchUrl>http://localhost:44321/</LaunchUrl>
       <SiteUrl>http://localhost:44321/</SiteUrl>
-      <LocalPath>C:\Projects\Multiproc\AppStats\AppStats\</LocalPath>
+      <LocalPath>C:\Projects\Multiproc-2\AppStats\AppStats\</LocalPath>
       <VRoot>
       </VRoot>
       <NetAppHost>IIS</NetAppHost>
@@ -70,13 +70,16 @@
   </Binaries>
   <Reports>
     <Report>
-      <Path>AppStats_130930.vsp</Path>
+      <Path>AppStats_140214.vsp</Path>
     </Report>
     <Report>
-      <Path>AppStats_130930(1).vsp</Path>
+      <Path>AppStats_140218.vsp</Path>
     </Report>
     <Report>
-      <Path>AppStats_130930(2).vsp</Path>
+      <Path>AppStats_140218(1).vsp</Path>
+    </Report>
+    <Report>
+      <Path>AppStats_140218(2).vsp</Path>
     </Report>
   </Reports>
   <Launches>

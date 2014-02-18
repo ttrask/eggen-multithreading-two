@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StatsModel.Store" Alias="Self" Provider="System.Data.SqlServerCe.4.0" ProviderManifestToken="4.0" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="StatsModelStoreContainer">
+    <EntitySet Name="DropFiles" EntityType="StatsModel.Store.DropFiles" store:Type="Tables" store:Name="DropFiles">
+      <DefiningQuery>SELECT 
+            [DropFiles].[DropFileId] AS [DropFileId], 
+            [DropFiles].[Filename] AS [Filename], 
+            [DropFiles].[CraeteDtTm] AS [CraeteDtTm], 
+            [DropFiles].[IsActive] AS [IsActive], 
+            [DropFiles].[LanguageId] AS [LanguageId], 
+            [DropFiles].[EnvironmentId] AS [EnvironmentId]
+            FROM [DropFiles] AS [DropFiles]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="DropFileStore" EntityType="StatsModel.Store.DropFileStore" store:Type="Tables" store:Name="DropFileStore">
+      <DefiningQuery>SELECT 
+            [DropFileStore].[DropFileRawData] AS [DropFileRawData], 
+            [DropFileStore].[DropFileId] AS [DropFileId], 
+            [DropFileStore].[DropFileStoreId] AS [DropFileStoreId]
+            FROM [DropFileStore] AS [DropFileStore]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Environments" EntityType="StatsModel.Store.Environments" store:Type="Tables" store:Name="Environments">
+      <DefiningQuery>SELECT 
+            [Environments].[EnvinronmentId] AS [EnvinronmentId], 
+            [Environments].[Name] AS [Name]
+            FROM [Environments] AS [Environments]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Languages" EntityType="StatsModel.Store.Languages" store:Type="Tables" store:Name="Languages">
+      <DefiningQuery>SELECT 
+            [Languages].[LanguageId] AS [LanguageId], 
+            [Languages].[Name] AS [Name], 
+            [Languages].[Description] AS [Description]
+            FROM [Languages] AS [Languages]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Records" EntityType="StatsModel.Store.Records" store:Type="Tables" store:Name="Records">
+      <DefiningQuery>SELECT 
+            [Records].[RecordId] AS [RecordId], 
+            [Records].[CreateDtTm] AS [CreateDtTm], 
+            [Records].[CreateUser] AS [CreateUser], 
+            [Records].[DropFileId] AS [DropFileId], 
+            [Records].[Size] AS [Size], 
+            [Records].[ProcessorCount] AS [ProcessorCount], 
+            [Records].[ExecuteDtTm] AS [ExecuteDtTm], 
+            [Records].[TimeValue] AS [TimeValue], 
+            [Records].[TimeTypeId] AS [TimeTypeId], 
+            [Records].[LanguageId] AS [LanguageId], 
+            [Records].[EnvironmentId] AS [EnvironmentId]
+            FROM [Records] AS [Records]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimeStatistics" EntityType="StatsModel.Store.TimeStatistics" store:Type="Tables" store:Name="TimeStatistics">
+      <DefiningQuery>SELECT 
+            [TimeStatistics].[DatasetSize] AS [DatasetSize], 
+            [TimeStatistics].[ProcessorCount] AS [ProcessorCount], 
+            [TimeStatistics].[TimeTypeId] AS [TimeTypeId], 
+            [TimeStatistics].[Mean] AS [Mean], 
+            [TimeStatistics].[Median] AS [Median], 
+            [TimeStatistics].[Average] AS [Average], 
+            [TimeStatistics].[Q1Mean] AS [Q1Mean], 
+            [TimeStatistics].[Q3Mean] AS [Q3Mean], 
+            [TimeStatistics].[Mode] AS [Mode], 
+            [TimeStatistics].[LanguageId] AS [LanguageId], 
+            [TimeStatistics].[EnvironmentId] AS [EnvironmentId], 
+            [TimeStatistics].[Min] AS [Min], 
+            [TimeStatistics].[Max] AS [Max], 
+            [TimeStatistics].[MeanAverage] AS [MeanAverage], 
+            [TimeStatistics].[RecordCount] AS [RecordCount], 
+            [TimeStatistics].[TimeStatisticId] AS [TimeStatisticId], 
+            [TimeStatistics].[BatchTime] AS [BatchTime]
+            FROM [TimeStatistics] AS [TimeStatistics]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="TimeTypes" EntityType="StatsModel.Store.TimeTypes" store:Type="Tables" store:Name="TimeTypes">
+      <DefiningQuery>SELECT 
+            [TimeTypes].[TimeTypeId] AS [TimeTypeId], 
+            [TimeTypes].[Name] AS [Name], 
+            [TimeTypes].[Description] AS [Description]
+            FROM [TimeTypes] AS [TimeTypes]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'DropFiles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="DropFiles">
+    <Key>
+      <PropertyRef Name="DropFileId" />
+      <PropertyRef Name="Filename" />
+      <PropertyRef Name="CraeteDtTm" />
+      <PropertyRef Name="IsActive" />
+      <PropertyRef Name="LanguageId" />
+      <PropertyRef Name="EnvironmentId" />
+    </Key>
+    <Property Name="DropFileId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Filename" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="CraeteDtTm" Type="datetime" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+    <Property Name="LanguageId" Type="int" Nullable="false" />
+    <Property Name="EnvironmentId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'DropFileStore' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="DropFileStore">
+    <Key>
+      <PropertyRef Name="DropFileRawData" />
+      <PropertyRef Name="DropFileId" />
+      <PropertyRef Name="DropFileStoreId" />
+    </Key>
+    <Property Name="DropFileRawData" Type="image" Nullable="false" />
+    <Property Name="DropFileId" Type="int" Nullable="false" />
+    <Property Name="DropFileStoreId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'Environments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="Environments">
+    <Key>
+      <PropertyRef Name="EnvinronmentId" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="EnvinronmentId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="20" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'Languages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="Languages">
+    <Key>
+      <PropertyRef Name="LanguageId" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="LanguageId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'Records' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="Records">
+    <Key>
+      <PropertyRef Name="RecordId" />
+      <PropertyRef Name="CreateDtTm" />
+      <PropertyRef Name="CreateUser" />
+      <PropertyRef Name="DropFileId" />
+      <PropertyRef Name="Size" />
+      <PropertyRef Name="ProcessorCount" />
+      <PropertyRef Name="ExecuteDtTm" />
+      <PropertyRef Name="TimeValue" />
+      <PropertyRef Name="TimeTypeId" />
+      <PropertyRef Name="LanguageId" />
+      <PropertyRef Name="EnvironmentId" />
+    </Key>
+    <Property Name="RecordId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="CreateDtTm" Type="datetime" Nullable="false" />
+    <Property Name="CreateUser" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="DropFileId" Type="int" Nullable="false" />
+    <Property Name="Size" Type="int" Nullable="false" />
+    <Property Name="ProcessorCount" Type="int" Nullable="false" />
+    <Property Name="ExecuteDtTm" Type="datetime" Nullable="false" />
+    <Property Name="TimeValue" Type="numeric" Nullable="false" />
+    <Property Name="TimeTypeId" Type="int" Nullable="false" />
+    <Property Name="LanguageId" Type="int" Nullable="false" />
+    <Property Name="EnvironmentId" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'TimeStatistics' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="TimeStatistics">
+    <Key>
+      <PropertyRef Name="DatasetSize" />
+      <PropertyRef Name="ProcessorCount" />
+      <PropertyRef Name="TimeTypeId" />
+      <PropertyRef Name="Mean" />
+      <PropertyRef Name="Median" />
+      <PropertyRef Name="Average" />
+      <PropertyRef Name="Q1Mean" />
+      <PropertyRef Name="Q3Mean" />
+      <PropertyRef Name="Mode" />
+      <PropertyRef Name="LanguageId" />
+      <PropertyRef Name="EnvironmentId" />
+      <PropertyRef Name="Min" />
+      <PropertyRef Name="Max" />
+      <PropertyRef Name="MeanAverage" />
+      <PropertyRef Name="RecordCount" />
+      <PropertyRef Name="TimeStatisticId" />
+    </Key>
+    <Property Name="DatasetSize" Type="int" Nullable="false" />
+    <Property Name="ProcessorCount" Type="int" Nullable="false" />
+    <Property Name="TimeTypeId" Type="tinyint" Nullable="false" />
+    <Property Name="Mean" Type="numeric" Nullable="false" />
+    <Property Name="Median" Type="numeric" Nullable="false" />
+    <Property Name="Average" Type="numeric" Nullable="false" />
+    <Property Name="Q1Mean" Type="numeric" Nullable="false" />
+    <Property Name="Q3Mean" Type="numeric" Nullable="false" />
+    <Property Name="Mode" Type="numeric" Nullable="false" />
+    <Property Name="LanguageId" Type="tinyint" Nullable="false" />
+    <Property Name="EnvironmentId" Type="tinyint" Nullable="false" />
+    <Property Name="Min" Type="numeric" Nullable="false" />
+    <Property Name="Max" Type="numeric" Nullable="false" />
+    <Property Name="MeanAverage" Type="numeric" Nullable="false" />
+    <Property Name="RecordCount" Type="int" Nullable="false" />
+    <Property Name="TimeStatisticId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BatchTime" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+            warning 6002: The table/view 'TimeTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+            -->
+  <EntityType Name="TimeTypes">
+    <Key>
+      <PropertyRef Name="TimeTypeId" />
+      <PropertyRef Name="Name" />
+    </Key>
+    <Property Name="TimeTypeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+  </EntityType>
+</Schema>
