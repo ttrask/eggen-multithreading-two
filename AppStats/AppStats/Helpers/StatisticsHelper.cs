@@ -26,6 +26,7 @@ namespace AppStats.Helpers
         //
         // GET: /StatisticsHelper/
         AppStatsContext _db = new AppStatsContext();
+        Object lockMe = new object();
 
 
         public Boolean UpdateStatistics()
@@ -45,95 +46,56 @@ namespace AppStats.Helpers
                 //get active set
 
 
-                var tups = (from r in _db.Records select new { r.LanguageId, r.EnvironmentId, r.ProcessorCount, r.Size }).Distinct().ToList();
-                var ts = tups.GroupBy(t => new { t.ProcessorCount, t.Size }).Select(group => new { CompositeKey = group.Key, CompositeValues = group.Select(s => new { s.LanguageId, s.EnvironmentId }).Distinct() });
-
+                var tups = _db.Records.GroupBy(r => new { r.ProcessorCount, r.LanguageId, r.EnvironmentId }).Select(r => r.Key).Distinct().ToList();
                 //List<long> langIds = (from r in _db.DropFiles select r.LanguageId).Distinct().ToList();
                 //List<long> envids = (from r in _db.DropFiles select r.EnvironmentId).Distinct().ToList();
                 //List<int> procCounts = (from r in _db.Records select r.ProcessorCount).Distinct().ToList();
                 //List<long> timeTypes = (from t in _db.TimeTypes select t.TimeTypeId).Distinct().ToList();
                 //List<int> ns = (from r in _db.Records select r.Size).Distinct().ToList();
 
-                AppStatsContext db = _db;
+                
+
 
 
                 try
                 {
-                    ConcurrentBag<TimeStatistic> stats = new ConcurrentBag<TimeStatistic>();
-
+                    List<TimeStatistic> stats = new List<TimeStatistic>();
 
                     //foreach (var tup in ts)
-                    Parallel.ForEach(ts, tup =>
+                    foreach (var tup in tups)
                     {
-                        
-                        int procCount = tup.CompositeKey.ProcessorCount;
-                        int size = tup.CompositeKey.Size;
-
-                        //Parallel.ForEach(langIds, langId =>
-
-                        //Parallel.ForEach(envids, envid =>
-
-                        //Parallel.ForEach(procCounts, procCount =>
-
-                        DateTime batchTime = DateTime.Now;
-                        DateTime dt1, dt2 = DateTime.Now;
-
-
-                        //Parallel.ForEach(tup.CompositeValues, s =>
-                        foreach (var s in tup.CompositeValues)
+                        using (AppStatsContext db = new AppStatsContext())
                         {
-                            long langId = s.LanguageId;
-                            long envid = s.EnvironmentId;
+                            DateTime batchTime = DateTime.Now;
+                            DateTime dt1, dt2 = DateTime.Now;
 
-
-
-                            //Dictionary<long, IEnumerable<Record>> timeRecords = new Dictionary<long, IEnumerable<Record>>();
-
-
-
-
-                            System.Diagnostics.Debug.WriteLine(String.Format("Time Sets:{0}-{1}-{2}-{3}", langId, envid, procCount, size));
-
-
+                            long langId = tup.LanguageId;
+                            long envid = tup.EnvironmentId;
+                            int procCount = tup.ProcessorCount;
                             dt1 = DateTime.Now;
 
-                            (from r in db.Records
-                             join d in db.DropFiles
-                             on r.DropFileId equals d.DropFileId
-                             where d.IsActive == true
-                             && r.Size == size
-                             && d.LanguageId == langId
-                             && d.EnvironmentId == envid
-                             && r.ProcessorCount == procCount
-                             select r).GroupBy(t => t.TimeTypeId)
-                             .ToList().ForEach(timeSets =>
+                            var recs = (from r in db.Records
+                                        join d in db.DropFiles
+                                            on r.DropFileId equals d.DropFileId
+                                        where d.IsActive == true
+                                        && d.LanguageId == langId
+                                        && d.EnvironmentId == envid
+                                        && r.ProcessorCount == procCount
+                                        select r).GroupBy(t => new { t.Size, t.TimeTypeId });
+
+                            Parallel.ForEach(recs, new ParallelOptions { MaxDegreeOfParallelism = 2 }, timeSets =>
                             {
 
                                 //System.Diagnostics.Debug.WriteLine("Time To execute LINQ:" + new TimeSpan(DateTime.Now.Ticks - dt1.Ticks).Milliseconds);
 
+                                dt1 = DateTime.Now;
 
+                                System.Diagnostics.Debug.WriteLine(String.Format("Time Sets:{0}-{1}-{2}-{3}", langId, envid, procCount, timeSets.Key.Size));
 
                                 if (timeSets != null && timeSets.Any())
                                 {
 
-
-                                    //IEnumerable<Time> timeSets = list;
-
-                                  //  Record set = timeSets.First();
-
-
-
-
-                                    //foreach (IGrouping<long, Record> timeSet in timeSets.Where(t => t.TimeTypeId > 0).GroupBy(t => t.TimeTypeId))
-                                    //{
-                                    //    timeRecords.Add(timeSet.Key, timeSet.Select(t => t));
-                                    //};
-
                                     System.Diagnostics.Debug.WriteLine("Time To Split Times " + timeSets.Count() + " by TimeType:" + new TimeSpan((DateTime.Now.Ticks - dt1.Ticks)).Milliseconds);
-
-                                    dt1 = DateTime.Now;
-
-                                    //Parallel.ForEach(timeRecords.Keys, tt =>
 
                                     List<double> times = new List<double>(timeSets.Select(t => Convert.ToDouble(t.TimeValue)).ToList());
 
@@ -143,16 +105,16 @@ namespace AppStats.Helpers
 
                                         DescriptiveStatistics statVals = new MathNet.Numerics.Statistics.DescriptiveStatistics(times);
 
-                                       //Record r = set;
+                                        //Record r = set;
 
                                         TimeStatistic stat = new TimeStatistic()
                                         {
                                             BatchTime = batchTime,
                                             LanguageId = Convert.ToByte(langId),
-                                            DatasetSize = times.Count(),
+                                            DatasetSize = (int)timeSets.Key.Size,
                                             ProcessorCount = timeSets.First().ProcessorCount,
                                             EnvironmentId = Convert.ToByte(envid),
-                                            TimeTypeId = timeSets.Key,
+                                            TimeTypeId = timeSets.Key.TimeTypeId,
                                             Mean = Convert.ToDecimal(statVals.Mean),
                                             Median = Convert.ToDecimal(Statistics.Median(times)),
                                             Average = Convert.ToDecimal(times.Average()),
@@ -163,40 +125,34 @@ namespace AppStats.Helpers
                                             RecordCount = times.Count(),
                                             MeanAverage = GetMeanAverage(times.ToList().ConvertAll<Decimal>(d => Convert.ToDecimal(d)))
                                         };
-                                        stats.Add(stat);
+
+                                        lock (lockMe)
+                                        {
+                                            stats.Add(stat);
+                                        }
                                     }
-
-                                    //);
-
-                                    System.Diagnostics.Debug.WriteLine(String.Format("Time To Generate {0} Statistics: {1}", stats.Count, new TimeSpan((DateTime.Now.Ticks - dt1.Ticks)).Milliseconds));
 
                                 }
 
+                                System.Diagnostics.Debug.WriteLine(String.Format("Time To Generate {0} Statistics: {1}", timeSets.Count(), new TimeSpan((DateTime.Now.Ticks - dt1.Ticks)).Milliseconds));
+                                System.Diagnostics.Debug.WriteLine(String.Format("Total Statistics Generated {0}", stats.Count()));
 
-                            });
+                            }
+                            );
+
+                            if (stats.Any())
+                            {
+
+                                new SqlBulkCopyHelper().SqlBulkInsertRecords("TimeStatistics", stats.ToList(), new List<string> { "TimeStatisticId" }, true);
+                                stats.Clear();
+                            }
                         }
-                        //);
-
-                      
-                    });
-
-
-                    if (stats.Any())
-                    {
-
-                        new SqlBulkCopyHelper().SqlBulkInsertRecords("TimeStatistics", stats.ToList(), new List<string> { "TimeStatisticId" }, true);
-                        stats = new ConcurrentBag<TimeStatistic>();
                     }
-
-
                 }
 
                 finally
                 {
-                    if (db.Database.Connection.State == System.Data.ConnectionState.Open)
-                    {
-                        db.Database.Connection.Close();
-                    }
+                    
                 }
 
             }

@@ -222,5 +222,3 @@ C:\Projects\Multiproc-2\AppStats\AppStats\bin\zh-Hant\System.Spatial.resources.d
 C:\Projects\Multiproc-2\AppStats\AppStats\obj\Debug\AppStats.csprojResolveAssemblyReference.cache
 C:\Projects\Multiproc-2\AppStats\AppStats\obj\Debug\AppStats.dll
 C:\Projects\Multiproc-2\AppStats\AppStats\obj\Debug\AppStats.pdb
-C:\Projects\Multiproc-2\AppStats\AppStats\bin\EntityFramework.Extended.dll
-C:\Projects\Multiproc-2\AppStats\AppStats\bin\EntityFramework.Extended.xml
