@@ -7,12 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using AppStats.Models;
-<<<<<<< .mine
 using AppStats.DataAccess;
-//using EntityFramework.Extensions;
-=======
-using AppStats.DataAccess;
->>>>>>> .r4
 
 namespace AppStats.Controllers
 {
