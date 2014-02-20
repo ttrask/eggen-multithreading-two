@@ -36,7 +36,7 @@ namespace AppStats.Models
         public byte EnvironmentId;
         public List<int> ProcCounts;
         public List<int> TimeTypeIds;
-        public IEnumerable<SelectListItem> LanguageListItems;
+        public List<SelectListItem> LanguageListItems;
         public IEnumerable<SelectListItem> EnvironmentListItems;
         public IEnumerable<SelectListItem> ProcCountListItems;
         public IEnumerable<SelectListItem> TimeTypeListItems;

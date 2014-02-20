@@ -16,6 +16,7 @@ namespace AppStats.Controllers
         //
         // GET: /Statistics/
         int goDivisor = 1000000;
+        int startVal = 1000;
 
         AppStatsContext db = new AppStatsContext();
 
@@ -33,13 +34,31 @@ namespace AppStats.Controllers
         {
             if (Filter != null)
             {
-                Filter.LanguageListItems = Record.LanguagesInUse;
+                if (Filter.StartVal == 0)
+                {
+                    Filter.StartVal = startVal;
+                }
+
+                Filter.LanguageListItems = Record.LanguagesInUse.ToList();
+
+                if (Filter.LanguageListItems.Count() == 1)
+                {
+                    Filter.LanguageId = Int32.Parse(Filter.LanguageListItems.First().Value);
+                }
 
                 if (Filter.LanguageId > 0)
                 {
+
+
                     Filter.LanguageListItems.Where(l => l.Value == Filter.LanguageId.ToString()).First().Selected = true;
 
                     Filter.EnvironmentListItems = GetEnvironsListForLang(Filter.LanguageId.ToString());
+
+                    if (Filter.EnvironmentListItems.Count() == 1)
+                    {
+                        Filter.EnvironmentId = Byte.Parse(Filter.EnvironmentListItems.First().Value);
+                    }
+
                     Filter.EnvironmentListItems.Where(l => l.Value == Filter.EnvironmentId.ToString()).First().Selected = true;
 
 
@@ -47,17 +66,20 @@ namespace AppStats.Controllers
                     {
                         Filter.ProcCountListItems = GetCountListForEnvLang(Filter.EnvironmentId.ToString(), Filter.LanguageId.ToString());
 
-                        if (Filter.ProcCounts.Any())
+                        if (Filter.ProcCounts != null && Filter.ProcCounts.Any())
                             Filter.ProcCountListItems.Where(l => l.Value == Filter.ProcCounts.First().ToString()).First().Selected = true;
 
-                        if (Filter.TimeTypeIds.Any())
+                        if (Filter.TimeTypeIds != null && Filter.TimeTypeIds.Any())
                         {
                             Filter.TimeTypeListItems = GetCountListForEnvLangProc(Filter.ProcCounts.First().ToString(), Filter.EnvironmentId.ToString(), Filter.LanguageId.ToString());
                             Filter.TimeTypeListItems.Where(l => l.Value == Filter.TimeTypeIds[0].ToString()).First().Selected = true;
                         }
 
                     }
+
+
                 }
+
 
             }
 
@@ -174,7 +196,7 @@ namespace AppStats.Controllers
             }
             else
             {
-                chart.Filters.Add(new ChartFilter());
+                chart.Filters.Add(new ChartFilter() { StartVal = startVal });
             }
 
             //chart.Sizes = chart.Sizes.Distinct().ToList() ;
@@ -263,14 +285,12 @@ namespace AppStats.Controllers
 
         public List<SelectListItem> GetCountListForEnvLangProc(String ProcCount, string EnvironmentId, string LanguageId)
         {
-            if (ProcCount != null)
+            Int32 environId, languageId, procCount;
+
+            List<SelectListItem> set = new List<SelectListItem>() { };
+
+            if (Int32.TryParse(EnvironmentId, out environId) && Int32.TryParse(LanguageId, out languageId) && Int32.TryParse(ProcCount, out procCount))
             {
-
-                Int32 environId = Int32.Parse(EnvironmentId);
-                Int32 languageId = Int32.Parse(LanguageId);
-                Int32 procCount = Int32.Parse(ProcCount);
-
-                List<SelectListItem> set = new List<SelectListItem>() { };
 
                 set.AddRange((from s in db.TimeStatistics
                               join tt in db.TimeTypes
@@ -288,14 +308,11 @@ namespace AppStats.Controllers
                 {
                     set.Insert(0, new SelectListItem() { Text = "", Value = "" });
                 }
-
-                return set;
             }
-            else
-            {
-                return null;
-            }
+            return set;
         }
+
+
 
 
         public string GetCountForEnvLangProc(String ProcCount, string EnvironmentId, string LanguageId)

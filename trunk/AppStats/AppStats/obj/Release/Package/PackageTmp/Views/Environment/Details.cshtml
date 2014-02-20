@@ -1,0 +1,29 @@
+﻿@model AppStats.Models.Envrionment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Envrionment</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.EnvinronmentId)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EnvinronmentId)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

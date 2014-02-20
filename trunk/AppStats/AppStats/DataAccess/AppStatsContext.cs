@@ -13,7 +13,8 @@ namespace AppStats.DataAccess
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using AppStats.Models;
-    
+    using System.Web;
+    using System.Web.Hosting;
     
     public partial class AppStatsContext : DbContext
     {
@@ -21,6 +22,12 @@ namespace AppStats.DataAccess
             : base("name=AppStatsContext")
         {
             Database.SetInitializer<AppStatsContext>(null);
+
+            
+            if (Database.Connection.ConnectionString.Contains("|DataDirectory|"))
+            {
+                Database.Connection.ConnectionString = Database.Connection.ConnectionString.Replace("|DataDirectory|", HostingEnvironment.MapPath("~/App_Data/")); 
+            }
 
 
             if (!Database.Exists())
