@@ -88,10 +88,14 @@
             $('a.btnRemove', this).button().click(function(){
                 $(this).closest('.FilterBox').remove();
             });
+
         });
 
         
+
+        
     }
+
 
     $(function () {
        
@@ -102,63 +106,66 @@
 
         @if (Model != null && Model.Filters.Count > 0)
         {
-            @:startVal = @Model.Filters[0].StartVal
+            @:startVal = @Model.Filters[0].StartVal.ToString()
               
         }
-
-        
         
         $('.selectable').selectable().each(function(){
-            $('.ui-selectee').each(function(){
+
+            $('.ui-selectee', this).each(function(){
                 if($(this).attr('startVal')==startVal){
                     $(this).addClass('ui-selected');
+                    foundSelected = true;
                 }
             });
+
         });
 
         $("#generateChart").click(function (event) {
 
-            var title = $('#txtTitle').val();
+            if(IsFilterValid('#FilterCollection')){
 
-            var filters = [];
-            //Get the id of the selected item in dropdown
-            $('#FilterCollection .Filter').each(function (index, f) {
-                var filter = new Filter();
+                var title = $('#txtTitle').val();
 
-                $( ".selectable .ui-selected").each(function(){
-                    filter.StartVal = $(this).attr('startVal');
-                    filter.EndVal = $(this).attr('endVal');
+                var filters = [];
+                //Get the id of the selected item in dropdown
+                $('#FilterCollection .Filter').each(function (index, f) {
+                    var filter = new Filter();
+
+                    $( ".selectable .ui-selected").each(function(){
+                        filter.StartVal = $(this).attr('startVal');
+                        filter.EndVal = $(this).attr('endVal');
+                    });
+
+
+                    filter.Name = $("#Name.FilterElement > .Selector > input", f)[0].value
+                    filter.EnvironmentId = $("#Environment.FilterElement> .Selector > Select", f)[0].value
+                    filter.LanguageId = $("#Language.FilterElement> .Selector > Select", f)[0].value
+                    filter.ProcCounts.push($("#ProcCount.FilterElement> .Selector > Select", f)[0].value)
+                    filter.TimeTypeIds.push($("#TimeType.FilterElement> .Selector > Select", f)[0].value)
+                    filters.push(filter);
                 });
 
+                this.href += "?filterString=" + JSON.stringify(filters);
+                this.href += "&title="+title;
 
-                filter.Name = $("#Name.FilterElement > .Selector > input", f)[0].value
-                filter.EnvironmentId = $("#Environment.FilterElement> .Selector > Select", f)[0].value
-                filter.LanguageId = $("#Language.FilterElement> .Selector > Select", f)[0].value
-                filter.ProcCounts.push($("#ProcCount.FilterElement> .Selector > Select", f)[0].value)
-                filter.TimeTypeIds.push($("#TimeType.FilterElement> .Selector > Select", f)[0].value)
-                filters.push(filter);
-            });
-
-            this.href += "?filterString=" + JSON.stringify(filters);
-            this.href += "&title="+title;
-
-            //Replace the predifined QueryString param "xxx" with the "id"
-            //$.ajax({
-            //    type: "POST",
-            //    url: this.href,
-            //    data: { "filterString":JSON.stringify(filters)},
-            //    dataType: 'json',
-            //    cache: false,
-            //    complete: function (data) {
-            //        GenerateChart();
-            //    }
-            //});
-
-
-            //console.log(JSON.stringify(filters));
+            }
+            else{
+                event.preventDefault();
+            }
+            
         });
-
     });
+
+    
+    function IsFilterValid(elemName){
+        var isValid = false;
+
+        $('form', $(elemName)).each(function(){
+            $(this).validate();
+            isValid = isValid && $(this).valid();
+        });
+    }
 </script>
 
 
@@ -183,12 +190,12 @@
                     </div>
                     <a id="btnAddFilter" onclick="javascript:AddFilter()" href="#" class="button">Add Data</a>
                     <hr />
-                    <a id="generateChart" href="@Url.Action("Chart")" class="button">Generate Chart!</a>
+                    <a id="generateChart" class="button" href="@Url.Action("Chart")">Generate Chart!</a>
                 </div>
 
             </td>
             <td>
-                <div id="FilterCollection" style="vertical-align: top;">
+                <div  id="FilterCollection" style="vertical-align: top;">
                     @foreach (ChartFilter filter in Model.Filters)
                     {
                         @Html.Action("Filter", new { Filter = filter })

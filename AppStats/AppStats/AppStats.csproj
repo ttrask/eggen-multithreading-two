@@ -312,6 +312,10 @@
     <Content Include="Views\Language\Create.cshtml" />
     <Content Include="Views\Language\Edit.cshtml" />
     <Content Include="Views\Language\Delete.cshtml" />
+    <EmbeddedResource Include="App_Data\AppStats.sl3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Include="Properties\PublishProfiles\Publisher.pubxml" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />
@@ -512,7 +516,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>49968</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:44321/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
