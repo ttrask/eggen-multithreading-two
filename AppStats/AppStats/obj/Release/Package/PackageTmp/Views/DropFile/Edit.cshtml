@@ -24,19 +24,20 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.CraeteDtTm)
+            @Html.LabelFor(model => model.Environment)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.CraeteDtTm)
-            @Html.ValidationMessageFor(model => model.CraeteDtTm)
+            @Html.DropDownListFor(x => x.EnvironmentId, AppStats.Models.Record.Environments)
+            @Html.ValidationMessageFor(model => model.Environment)
         </div>
 
+
         <div class="editor-label">
-            @Html.LabelFor(model => model.IsActive)
+            @Html.LabelFor(model => model.Language)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.IsActive)
-            @Html.ValidationMessageFor(model => model.IsActive)
+            @Html.DropDownListFor(x => x.LanguageId, AppStats.Models.Record.Languages)
+            @Html.ValidationMessageFor(model => model.Environment)
         </div>
 
         <p>

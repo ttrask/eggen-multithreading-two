@@ -756,11 +756,3 @@ tr.pager td {
 }
 
 
-a.AdminLogo
-{
-    background: url(../Images/gear.png) no-repeat top left;
-     display: block;
-     width: 75px;
-     height: 75px;
-     text-indent: -9999px; /* hides the link text */
-}

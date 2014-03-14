@@ -9,8 +9,8 @@
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/highcharts/highcharts.js"></script>
-    <script src="~/Scripts/highcharts/modules/exporting.js"></script>    
-    <script src="~/Scripts/Download.js"></script>    
+    <script src="~/Scripts/highcharts/modules/exporting.js"></script>
+    <script src="~/Scripts/Download.js"></script>
     <script src="~/Scripts/export-csv.js"></script>
     <script src="~/Scripts/site.js"></script>
     <meta name="viewport" content="width=device-width" />
@@ -42,21 +42,30 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            width:200px;
+            width: 200px;
         }
 
         select
         {
-            width:200px;
+            width: 200px;
         }
-            .selectable li
-            {
-                border:1px solid grey;
-                margin: 3px;
-                padding: 0.4em;
-                font-size: 1.4em;
-                height: 18px;
-            }
+
+        .selectable li
+        {
+            border: 1px solid grey;
+            margin: 3px;
+            padding: 0.4em;
+            font-size: 1.4em;
+            height: 18px;
+        }
+
+        a.AdminLogo
+        {
+            background: url(../Images/gear.png) no-repeat top left;
+            display: inline-block;
+
+            text-indent: -9999px;
+        }
     </style>
 </head>
 <body>
@@ -70,10 +79,10 @@
                 <nav>
                     <ul id="menu">
                         <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Statistics", "Index", "Statistics")</li>
-                        <li>@Html.ActionLink("Import", "ImportData", "Import")</li>
-                        <li>@Html.ActionLink("Uploaded Files", "Index", "DropFile")</li>
-                        <li>@Html.ActionLink(".", "Index", "Admin", null, new { @class = "AdminLogo" })</li>
+                        <li>@Html.ActionLink("Charts & Data", "Index", "Statistics")</li>
+                        <li>@Html.ActionLink("Files", "Index", "DropFile")</li>
+                        <li>@Html.ActionLink("Upload", "ImportData", "Import")</li>
+                        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
                     </ul>
                 </nav>
             </div>

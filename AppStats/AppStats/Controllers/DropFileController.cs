@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -137,6 +138,18 @@ namespace AppStats.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+
+        
+        public FileStreamResult Download(int id)
+        {
+            var dropfile = db.DropFiles.Find(id);
+            var filestore = db.DropFileStores.Find(dropfile.DropFileStores.First().DropFileStoreId);
+
+            Stream stream = new MemoryStream(filestore.DropFileRawData);
+
+            return File(stream, "application/octet-stream", dropfile.Filename);
         }
     }
 }
