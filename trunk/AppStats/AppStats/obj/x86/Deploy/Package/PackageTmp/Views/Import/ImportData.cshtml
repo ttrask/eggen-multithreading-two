@@ -1,0 +1,39 @@
+﻿@model AppStats.Models.DropFile
+
+
+@{
+    ViewBag.Title = "ImportData";
+}
+
+<h2>Import Data</h2>
+
+<form action="" method="post" enctype="multipart/form-data">
+    <p>
+        <table>
+            <tr>
+                <td class="title">Environment</td>
+                <td>@Html.DropDownListFor(x => x.EnvironmentId, AppStats.Models.Record.Environments) </td>
+            </tr>
+            <tr>
+                <td class="title">Language</td>
+                <td>@Html.DropDownListFor(x => x.LanguageId, AppStats.Models.Record.Languages) </td>
+            </tr>
+            <tr>
+                <td class="Select file to upload">Upload File</td>
+                <td>
+                    <input type="file" id="uploadedFile" name="uploadedFile" /></td>
+            </tr>
+
+
+            <tr>
+                <td style="column-span: 2">
+                    <input type="submit" title="Submit Data" />
+                </td>
+            </tr>
+
+        </table>
+
+
+
+    </p>
+</form>

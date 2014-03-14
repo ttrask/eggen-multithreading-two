@@ -194,10 +194,10 @@ namespace AppStats.Controllers
                     }
                 }
             }
-            else
-            {
-                chart.Filters.Add(new ChartFilter() { StartVal = startVal });
-            }
+            //else
+            //{
+            //    chart.Filters.Add(new ChartFilter() { StartVal = startVal });
+            //}
 
             //chart.Sizes = chart.Sizes.Distinct().ToList() ;
 

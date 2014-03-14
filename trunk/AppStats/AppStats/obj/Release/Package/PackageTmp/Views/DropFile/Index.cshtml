@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<AppStats.Models.DropFile>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Uploaded Files";
 }
 
-<h2>Index</h2>
+<h2>Uploaded Files</h2>
+
+@Html.ActionLink("Upload a new File", "ImportData", "Import", null, new { @class="button"} )
+
 <table>
     <tr>
         <th style="padding-left:2px; padding-right:2px">
@@ -34,7 +37,9 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.DropFileId }) |
             @Html.ActionLink("Details", "Details", new { id = item.DropFileId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.DropFileId })
+            @Html.ActionLink("Delete", "Delete", new { id = item.DropFileId }) |
+                @Html.ActionLink("Download", "Download", new { id = item.DropFileId })
+
             </td>
         </tr>
     }
