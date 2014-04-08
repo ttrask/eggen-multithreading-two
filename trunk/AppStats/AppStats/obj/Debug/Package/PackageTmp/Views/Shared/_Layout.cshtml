@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+    <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/highcharts/highcharts.js"></script>
+    <script src="~/Scripts/highcharts/modules/exporting.js"></script>
+    <script src="~/Scripts/Download.js"></script>
+    <script src="~/Scripts/export-csv.js"></script>
+    <script src="~/Scripts/site.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <script>
+        $(function () {
+            $('a.button, button').button();
+        });
+
+    </script>
+
+    <style>
+        .selectable .ui-selecting
+        {
+            background: #FECA40;
+        }
+
+        .selectable .ui-selected, .selectable li:hover
+        {
+            background: #F39814;
+            color: white;
+        }
+
+        ul.selectable
+        {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 200px;
+        }
+
+        select
+        {
+            width: 200px;
+        }
+
+        .selectable li
+        {
+            border: 1px solid grey;
+            margin: 3px;
+            padding: 0.4em;
+            font-size: 1.4em;
+            height: 18px;
+        }
+
+        a.AdminLogo
+        {
+            background: url(../Images/gear.png) no-repeat top left;
+            display: inline-block;
+
+            text-indent: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("Stats Engine", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <nav>
+                    <ul id="menu">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Charts & Data", "Index", "Statistics")</li>
+                        <li>@Html.ActionLink("Files", "Index", "DropFile")</li>
+                        <li>@Html.ActionLink("Upload", "ImportData", "Import")</li>
+                        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
