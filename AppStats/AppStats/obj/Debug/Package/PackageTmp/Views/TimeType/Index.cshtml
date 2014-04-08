@@ -1,0 +1,39 @@
+﻿@model IEnumerable<AppStats.Models.TimeType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td style="white-space:nowrap">
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td style="width:100%">
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td style="white-space:nowrap">
+            @Html.ActionLink("Edit", "Edit", new { id=item.TimeTypeId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TimeTypeId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TimeTypeId })
+        </td>
+    </tr>
+}
+
+</table>

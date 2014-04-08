@@ -1,0 +1,332 @@
+﻿@model AppStats.Models.Chart
+@using AppStats.Models;
+
+@{
+    ViewBag.Title = "Generate Chart!";
+}
+<style>
+    .FilterBox
+    {
+        display: inline-block;
+        background-color: white;
+        border: 1px black solid;
+        padding: 5px;
+    }
+
+        .FilterBox .FilterElement
+        {
+        }
+
+            .FilterBox .FilterElement .title
+            {
+                font-size: 120%;
+                font-weight: bold;
+            }
+
+    #FilterCollection > div
+    {
+        display: inline-block;
+    }
+
+    #FilterCollection
+    {
+        display: inline-block;
+    }
+</style>
+
+<script>
+
+    function Filter(type) {
+        this.EnvironmentId = 0;
+        this.LanguageId = 0;
+        this.StartVal = 0;
+        this.EndVal = 0;
+        this.ProcCounts = [];
+        this.TimeTypeIds = [];
+        this.toString = function () {
+            return JSON.stringify(this);
+        }
+    }
+
+    function AddFilter() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("Filter")',
+            data: {},
+            dataType: 'json',
+            cache: false,
+            complete: function (data) {
+                $('#FilterCollection').append(data.responseText);
+                AttachDropdownCascadeEvents();
+            }
+        });
+    }
+
+    function AttachDropdownCascadeEvents(){
+        $('.FilterBox').each(function(f){
+
+            $('#ddLanguages',this).cascade({
+                url: '@Url.Action("GetEnvironsForLang")',
+                paramName: 'languageId',
+                childSelect: $('#ddEnvironments',this)
+            });
+
+            $('#ddEnvironments',this).cascade({ 
+                url: '@Url.Action("GetCountForEnvLang")',
+                paramName: "EnvironmentId",
+                useMultipleParams:true,
+                childSelect: $('#ddProcCounts', this)
+            });
+
+            $('#ddProcCounts',this).cascade({ 
+                url: '@Url.Action("GetCountForEnvLangProc")',
+                paramName: {
+                    'EnvironmentId': $("#Environment.FilterElement> .Selector > Select", this)[0].value
+                       , 'LanguageId': $("#Language.FilterElement> .Selector > Select", this)[0].value
+                       , 'ProcCount': $("#ProcCount.FilterElement> .Selector > Select", this)[0].value
+                },
+                useMultipleParams:true,
+                childSelect: $('#ddTimeTypes', this)
+            });
+
+
+            $('a.btnRemove', this).button().click(function(){
+                $(this).closest('.FilterBox').remove();
+            });
+
+            $('form', this).each(function(){
+                $(this).validate();
+            });
+
+        });
+
+        
+
+        
+    }
+
+
+    $(function () {
+       
+        AttachDropdownCascadeEvents();
+
+        var startVal=0;
+        var subtitle="";
+
+        @if (Model != null && Model.Filters.Count > 0)
+        {
+            @:startVal = @Model.Filters[0].StartVal.ToString()
+              
+        }
+        else{
+            @:startVal = 1000;
+        }
+
+        
+        $('.selectable').selectable().each(function(){
+
+            $('.ui-selectee', this).each(function(){
+                if($(this).attr('startVal')==startVal){
+                    $(this).addClass('ui-selected');
+                    foundSelected = true;
+                }
+            });
+
+        });
+
+        $("#generateChart").click(function (event) {
+
+            if(IsFilterValid('#FilterCollection')){
+
+                var title = $('#txtTitle').val();
+
+                var filters = [];
+                //Get the id of the selected item in dropdown
+                $('#FilterCollection .Filter').each(function (index, f) {
+                    var filter = new Filter();
+
+                    $( ".selectable .ui-selected").each(function(){
+                        filter.StartVal = $(this).attr('startVal');
+                        filter.EndVal = $(this).attr('endVal');
+                    });
+
+
+                    filter.Name = $("#Name.FilterElement > .Selector > input", f)[0].value
+                    filter.EnvironmentId = $("#Environment.FilterElement> .Selector > Select", f)[0].value
+                    filter.LanguageId = $("#Language.FilterElement> .Selector > Select", f)[0].value
+                    filter.ProcCounts.push($("#ProcCount.FilterElement> .Selector > Select", f)[0].value)
+                    filter.TimeTypeIds.push($("#TimeType.FilterElement> .Selector > Select", f)[0].value)
+                    filters.push(filter);
+                });
+
+                this.href += "?filterString=" + JSON.stringify(filters);
+                this.href += "&title="+title;
+
+            }
+            else{
+                event.preventDefault();
+            }
+            
+        });
+    });
+
+    
+    function IsFilterValid(elemName){
+        var isValid = true;
+
+        $('form', $(elemName)).each(function(){
+            $(this).validate();
+            isValid = isValid && $(this).valid();
+        });
+
+        return isValid;
+    }
+</script>
+
+
+
+<div>
+    <table style="vertical-align: top">
+        <tr>
+            <td style="vertical-align: top; border-right: 2px solid black; padding-right: 5px; margin-right: 5px;">
+                <div style="">
+                    <div id="dvRange">
+
+                        <h4>Dataset Size Range</h4>
+                        <ul class="selectable" id="dsSize">
+                            <li startval="1000" endval="10000">1k-10k</li>
+                            <li startval="10000" endval="100000">10k-100k</li>
+                            <li startval="100000" endval="1000000">100k-1mil</li>
+                            <li startval="1000000" endval="10000000">1mil-10mil</li>
+                            <li startval="10000000" endval="100000000">10mil-100mil</li>
+                        </ul>
+                        <h4>Chart Title</h4>
+                        <input type="text" id="txtTitle" value="@Model.Title" style="width: 180px;" />
+                    </div>
+                    <a id="btnAddFilter" onclick="javascript:AddFilter()" href="#" class="button">Add Data</a>
+                    <hr />
+                    <a id="generateChart" class="button" href="@Url.Action("Chart")">Generate Chart!</a>
+                </div>
+
+            </td>
+            <td>
+                <div id="FilterCollection" style="vertical-align: top;">
+                    @foreach (ChartFilter filter in Model.Filters)
+                    {
+                        @Html.Action("Filter", new { Filter = filter })
+                    }
+
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<br />
+
+<br />
+<br />
+@if (Model != null && Model.Filters.Any())
+{
+    <div id="cTable">
+    </div>
+    <input type="button" id="getcsv" title="Get CSV" value="Download CSV file of Data" />
+    <div id="cCont" />
+
+    <br />
+    <br />
+
+
+    <script type="text/javascript">
+
+        $(function () {
+
+            var chart = new Highcharts.Chart({
+                chart: {
+                    width: 800,
+                    type: 'spline',
+                    renderTo: "cTable"
+                },
+                title: {
+                    text: '@Model.Title'
+                },
+                subtitle: {
+                    text: ''
+                    
+                },
+                xAxis: {
+                    title: {
+                        text: 'Number of Records Generated'
+                    }
+                },
+                yAxis: {
+                    title: {
+                        text: 'Time to Execute (ms)'
+                    }
+                },
+                tooltip: {
+                    tooltip: {
+                        crosshairs: true,
+                        shared: true
+                    },
+                },
+                legend:{
+                    layout: "Vertical",
+                    align: "right",
+                    verticalAlign:"middle"
+
+                },
+                
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [
+                        @if (Model.Filters != null)
+                        {
+
+                            foreach (ChartFilter filter in Model.Filters)
+                            {
+                                    @("{")
+                                    @: name: '@(String.Format("{0}", filter.Name))',
+                                    foreach (ChartData data in filter.Data)
+                                    {
+                                
+                                                                                                                       
+                                    @("data: [")
+                                        foreach (Tuple<int, decimal> val in data.Data)
+                                        {
+                                        @(String.Format("[{0},{1}],", val.Item1, val.Item2))
+                                        }
+                                    @("]")          
+                                    
+                                    }
+                                    @("},")
+                            }
+
+                        }]
+                        });
+
+        
+            $( "tspan:contains('#subtitlePlaceholder')" ).each(function(){
+            
+                $(this).text($('#dsSize .ui-selected').text()+" records");
+            });
+
+            $('#getcsv').click(function () {
+                download(chart.getCSV(), "@Model.Title .csv", "text/csv");
+            });
+        });
+
+        
+       
+    </script>
+}
+
+

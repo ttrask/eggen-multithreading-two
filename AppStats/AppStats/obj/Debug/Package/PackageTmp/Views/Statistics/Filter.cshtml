@@ -1,0 +1,84 @@
+﻿@model AppStats.Models.ChartFilter
+@{
+    Layout = "";
+}
+
+<div class="FilterBox" style="position: relative; margin-left: 5px; margin-top: 5px; margin-right: 0px">
+    <form style="display: inline-block">
+        <a style="width: 100%" class="btnRemove button">remove</a>
+        <h3>Dataset Specifics</h3>
+        <div class="Filter">
+            <div class="FilterElement" id="Language">
+                <div class="title">
+                    Language
+                </div>
+                <div class="Selector">
+                    @if (Model != null && Model.LanguageListItems != null && Model.LanguageListItems.Count() > 0)
+                    { 
+                        @Html.DropDownListFor(x => x.LanguageId, Model.LanguageListItems, new { id = "ddLanguages", @class = "selectable", @required = "required" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.LanguageId, AppStats.Models.Record.LanguagesInUse, new { id = "ddLanguages", @class = "selectable", @required = "required" })
+                    }
+
+                </div>
+            </div>
+            <div class="FilterElement" id="Environment">
+                <div class="title">
+                    Environment
+                </div>
+                <div class="Selector">
+                    @if (Model != null && Model.EnvironmentListItems != null && Model.EnvironmentListItems.Count() > 0)
+                    {
+                        @Html.DropDownListFor(x => x.EnvironmentId, Model.EnvironmentListItems, new { id = "ddEnvironments", @required = "required" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.EnvironmentId, new List<SelectListItem>(), new { id = "ddEnvironments", @required = "required" })
+                    }
+                </div>
+            </div>
+            <div class="FilterElement" id="ProcCount">
+                <div class="title">
+                    Proc Counts
+                </div>
+                <div class="Selector">
+                    @if (Model != null && Model.ProcCountListItems != null && Model.ProcCountListItems.Count() > 0)
+                    {
+                        @Html.DropDownListFor(x => x.ProcCounts, Model.ProcCountListItems, new { id = "ddProcCounts", @required = "required" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.ProcCounts, new List<SelectListItem>(), new { id = "ddProcCounts", @required = "required" })
+                    }
+                </div>
+            </div>
+            <div class="FilterElement" id="TimeType">
+                <div class="title">
+                    Time Types
+                </div>
+                <div class="Selector">
+                    @if (Model != null && Model.TimeTypeListItems != null && Model.TimeTypeListItems.Count() > 0)
+                    {
+                        @Html.DropDownListFor(x => x.TimeTypeIds, Model.TimeTypeListItems, new { id = "ddTimeTypes", @required = "required" })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(x => x.TimeTypeIds, new List<SelectListItem>(), new { id = "ddTimeTypes", @required = "required" })
+
+                    }
+                </div>
+            </div>
+            <div class="FilterElement" id="Name">
+                <div class="title">
+                    Legend
+                </div>
+                <div class="Selector">
+                    @Html.TextBoxFor(x => x.Name, new { style = "width:160px", id = "txtName" })
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

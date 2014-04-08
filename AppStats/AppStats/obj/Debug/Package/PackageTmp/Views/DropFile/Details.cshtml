@@ -1,0 +1,43 @@
+﻿@model AppStats.Models.DropFile
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>DropFile</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Filename)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Filename)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.CraeteDtTm)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CraeteDtTm)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Environment)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Environment.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Language)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Language.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.DropFileId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
