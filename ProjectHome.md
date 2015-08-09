@@ -1,0 +1,1 @@
+In an ongoing effort to make Stuff up, I've taken to the task of seeing if Go is faster than Scala.  Protip: it is.  by a lot.
